@@ -23,7 +23,7 @@ const courses=[
    await page.screenshot({path:`/tmp/study-${name}-desktop.png`,fullPage:true});
    for(const width of [1440,1024,768,390,320]){
     await page.setViewportSize({width,height:900});
-    for(const route of ['overview',...chapters,'recall',practice,'sources']){
+    for(const route of ['overview',...chapters,'recall',practice,'sources',...(name.startsWith('environmental')?['essentials']:[])]){
      await page.goto(url+'#'+route);await page.waitForTimeout(80);
      assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`overflow: ${name} ${width} ${route}`);
      assert.equal(await page.locator('.study-tabs a[aria-current]').count(),1,`tab selection: ${name} ${route}`);
@@ -46,6 +46,20 @@ const courses=[
    assert.equal(await page.locator('.study-footer a[href="./index.html"]').count(),1);
    console.log('PASS',name);
   }
+  const memoURL=pathToFileURL(path.join(root,'revision-environmental-management.html')).href+'#essentials';
+  await page.goto(memoURL);await page.waitForSelector('.notion-row');
+  const total=await page.locator('.notion-row').count();assert(total>150);
+  assert.equal(await page.locator('.notions-chapter').count(),6);
+  const missing=await page.evaluate(()=>ENV_NOTIONS.flatMap(c=>c.groups).filter(g=>!ENV.chapters.some(c=>c.sections.some(s=>s.id===g.source))).map(g=>g.source));assert.deepEqual(missing,[]);
+  const boundaries=page.locator('.notions-group').filter({has:page.getByRole('heading',{name:'Les 9 planetary boundaries',exact:true})});assert.equal(await boundaries.locator('dt').count(),10);
+  const tenR=page.locator('.notions-group').filter({has:page.getByRole('heading',{name:'Les 10R · R0 à R9',exact:true})});assert.equal(await tenR.locator('dt').count(),10);
+  await page.locator('#search').fill('SSP');assert(await page.locator('.notion-row').count()<total);assert(await page.getByText('SSP5 · Fossil-fueled Development',{exact:true}).isVisible());
+  await page.locator('#search').fill('xxxxnoresult');assert.equal(await page.locator('.notion-row').count(),0);await page.locator('#search').fill('');assert.equal(await page.locator('.notion-row').count(),total);
+  await page.locator('.notions-nav a').last().click();await page.waitForTimeout(100);assert(await page.locator('#notions-circularite').isVisible());await page.reload();await page.waitForSelector('#notions-circularite');
+  await page.goto(memoURL);await page.waitForSelector('.notions-heading');await page.screenshot({path:'/tmp/environmental-notions-desktop.png'});
+  await page.setViewportSize({width:390,height:844});await page.screenshot({path:'/tmp/environmental-notions-mobile.png'});
+  await page.emulateMedia({media:'print'});assert.equal(await page.locator('.notion-row:visible').count(),total);assert(!await page.locator('.study-sidebar').isVisible());await page.emulateMedia({media:'screen'});
+  console.log('PASS memo:',total,'one-sentence entries, 6 chapters, full lists, search, deep links and printing');
   assert.deepEqual(signature[0],signature[1],'Strategic and Positive shell dimensions/styles differ');
   assert.deepEqual(signature[0],signature[2],'Strategic and Environmental shell dimensions/styles differ');
   await page.goto(pathToFileURL(path.join(root,'index.html')).href);await page.waitForSelector('.study-sidebar');await page.locator('#courseSearch').fill('environmental');assert.equal(await page.locator('.course.featured:visible').count(),1);await page.screenshot({path:'/tmp/study-hub.png',fullPage:true});

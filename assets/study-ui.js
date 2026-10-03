@@ -43,6 +43,7 @@
   document.querySelector('.mobile-nav')?.remove();
   const nav=originalNav||document.createElement('nav');nav.id='chapter-nav';nav.setAttribute('aria-label','Chapitres');nav.className='study-chapters';
   document.getElementById('study-nav-slot').replaceWith(nav);
+  if(env){const memo=document.createElement('a');memo.href='#essentials';memo.className='study-memo-link';memo.innerHTML=icon('list')+'Toutes les notions';nav.before(memo);}
   const progress=originalProgress||document.createElement('div');progress.className='study-progress';
   if(!env)progress.innerHTML=`<label for="course-progress">Chapitres révisés <span id="progress-label"></span></label><progress id="course-progress" max="${course.chapters.length}" value="0"></progress>`;
   document.getElementById('study-progress-slot').replaceWith(progress);
@@ -68,6 +69,7 @@
   function sync(){
     const active=(location.hash.slice(1)||'overview').split('/')[0];
     const view=['recall',exam,'sources'].includes(active)?active:'overview';
+    const memoLink=document.querySelector('.study-memo-link');if(memoLink){if(active==='essentials')memoLink.setAttribute('aria-current','page');else memoLink.removeAttribute('aria-current');}
     document.querySelectorAll('.study-tabs a').forEach(a=>{if(a.dataset.view===view)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
     if(!env){
       nav.innerHTML=course.chapters.map(([id,title],i)=>`<a href="#${id}" ${id===active?'aria-current="page"':''}><span class="nav-number">${String(i+1).padStart(2,'0')}</span><span>${title}</span><span class="nav-check">${saved.done[id]?'✓':''}</span></a>`).join('');
