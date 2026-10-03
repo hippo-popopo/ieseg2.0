@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Change Management — Révisions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F5F2E8;
+  --paper-deep:#ECE5D3;
+  --card:#FFFDF8;
+  --ink:#20242B;
+  --ink-soft:#4A4F58;
+  --navy:#101826;
+  --navy-soft:#1B2739;
+  --navy-tint:#26364F;
+  --brass:#A9782E;
+  --brass-deep:#8A611F;
+  --brass-tint:#EBDBB8;
+  --sage:#4E6350;
+  --sage-tint:#DCE5DA;
+  --red:#9C4B3E;
+  --red-tint:#F2DCD6;
+  --green:#3E7355;
+  --green-tint:#DCEADF;
+  --line:#DED4B9;
+  --line-soft:#E9E2CD;
+  --radius:8px;
+  --shadow: 0 1px 2px rgba(16,24,38,.04), 0 8px 24px rgba(16,24,38,.06);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{
+  font-family:'Fraunces',serif;
+  font-weight:600;
+  line-height:1.15;
+  margin:0 0 .5em 0;
+  color:var(--navy);
+  letter-spacing:0;
+}
+p{margin:0 0 1em 0;}
+a{color:var(--brass-deep);}
+::selection{background:var(--brass-tint);}
+button{font-family:inherit;}
+:focus-visible{outline:2px solid var(--brass); outline-offset:2px;}
+
+/* ---------- Layout shell ---------- */
+.shell{display:flex; min-height:100vh;}
+
+.sidebar{
+  width:272px;
+  flex-shrink:0;
+  background:var(--navy);
+  color:#EDE7D6;
+  position:fixed;
+  top:0; left:0; bottom:0;
+  display:flex;
+  flex-direction:column;
+  padding:28px 22px;
+  z-index:50;
+  border-right:1px solid rgba(255,255,255,.06);
+}
+.brand{
+  display:flex; align-items:center; gap:12px;
+  margin-bottom:30px;
+  text-decoration:none;
+}
+.brand-mark{
+  width:38px;height:38px;border-radius:50%;
+  border:1.5px solid var(--brass);
+  position:relative;
+  flex-shrink:0;
+}
+.brand-mark::before,.brand-mark::after{
+  content:"";
+  position:absolute;
+  background:var(--brass);
+  top:50%; left:50%;
+  transform-origin:0 0;
+  border-radius:2px;
+}
+.brand-mark::before{ width:9px; height:2px; transform:rotate(-45deg) translateY(-1px);}
+.brand-mark::after{ width:6px; height:2px; transform:rotate(70deg) translateY(-1px);}
+.brand-text{font-family:'Fraunces',serif; font-size:.98rem; line-height:1.25; color:#F5F1E4;}
+.brand-text b{display:block; font-weight:600; font-size:1.02rem;}
+.brand-text span{font-size:.72rem; color:#9AA3B5; letter-spacing:.03em;}
+
+.nav{display:flex; flex-direction:column; gap:2px; margin-top:6px;}
+.nav a{
+  text-decoration:none;
+  color:#C7CBD6;
+  font-size:.89rem;
+  font-weight:500;
+  padding:10px 12px;
+  border-radius:9px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  transition:background .15s ease, color .15s ease;
+}
+.nav a .dot{
+  width:6px;height:6px;border-radius:50%;
+  background:#4A5468;
+  flex-shrink:0;
+  transition:background .15s ease, transform .15s ease;
+}
+.nav a:hover{ background:rgba(255,255,255,.05); color:#F2EEE0;}
+.nav a.active{ background:rgba(169,120,46,.16); color:#F5EFDD;}
+.nav a.active .dot{ background:var(--brass); transform:scale(1.4);}
+.home-link{
+  text-decoration:none;
+  color:#F5EFDD;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:8px;
+  padding:10px 12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:.89rem;
+  font-weight:700;
+  margin-bottom:14px;
+}
+.home-link:hover{ background:rgba(255,255,255,.1); color:#fff; }
+.home-link .dot{ background:var(--brass); }
+.nav-group-label{
+  font-size:.68rem; text-transform:uppercase; letter-spacing:.09em;
+  color:#6C7690; margin:18px 4px 6px; font-weight:600;
+}
+.sidebar-foot{
+  margin-top:auto;
+  padding-top:18px;
+  border-top:1px solid rgba(255,255,255,.08);
+  font-size:.74rem;
+  color:#7A83967;
+  color:#7A8396;
+}
+
+.menu-toggle{
+  display:none;
+  position:fixed; top:14px; right:14px; z-index:60;
+  width:42px; height:42px; border-radius:50%;
+  background:var(--navy); border:none; color:#EDE7D6;
+  font-size:1.1rem; cursor:pointer;
+  box-shadow:var(--shadow);
+}
+
+.main{
+  margin-left:272px;
+  flex:1;
+  min-width:0;
+}
+.section{
+  padding:64px 56px;
+  max-width:960px;
+  border-bottom:1px solid var(--line-soft);
+}
+.section.tight{padding-top:44px;}
+#quiz.section{max-width:1040px;}
+
+/* ---------- Hero ---------- */
+.hero{
+  background:var(--navy);
+  color:#F2EEE0;
+  padding:72px 56px 58px;
+  position:relative;
+  overflow:hidden;
+  border-bottom:none;
+}
+.hero::after{
+  content:"";
+  position:absolute; right:-120px; top:-120px;
+  width:420px; height:420px; border-radius:50%;
+  border:1px solid rgba(169,120,46,.25);
+  display:none;
+}
+.hero::before{
+  content:"";
+  position:absolute; right:-40px; top:-40px;
+  width:300px; height:300px; border-radius:50%;
+  border:1px solid rgba(169,120,46,.18);
+  display:none;
+}
+.eyebrow{
+  font-size:.82rem; color:#B79F73; font-weight:600;
+  margin-bottom:14px; letter-spacing:.02em;
+}
+.hero h1{
+  color:#FBF8EF;
+  font-size:2.85rem;
+  max-width:640px;
+  margin-bottom:.28em;
+}
+.hero p.lede{
+  color:#C6CAD6; font-size:1.12rem; max-width:560px; margin-bottom:30px;
+}
+.hero-stats{ display:flex; gap:38px; flex-wrap:wrap; position:relative; z-index:2;}
+.hero-stat b{
+  display:block; font-family:'Fraunces',serif; font-size:2rem; color:var(--brass-tint); font-weight:600;
+}
+.hero-stat span{ font-size:.8rem; color:#9AA3B5;}
+.hero-line{
+  margin-top:44px; display:flex; align-items:center; gap:0; position:relative; z-index:2;
+}
+.hero-node{
+  display:flex; flex-direction:column; align-items:center; gap:8px; width:120px; text-align:center;
+}
+.hero-node b{
+  width:34px;height:34px;border-radius:50%; background:var(--navy-soft); border:1.5px solid var(--brass);
+  display:flex; align-items:center; justify-content:center; font-family:'Fraunces',serif; color:var(--brass-tint); font-size:.95rem;
+}
+.hero-node span{font-size:.72rem; color:#9AA3B5; line-height:1.3;}
+.hero-connector{ flex:1; height:1px; background:linear-gradient(90deg, rgba(169,120,46,.5), rgba(169,120,46,.15)); margin:0 -6px 26px; min-width:20px;}
+
+/* ---------- Typography helpers ---------- */
+.kicker{
+  font-size:.78rem; font-weight:700; color:var(--brass-deep);
+  letter-spacing:.02em; margin-bottom:10px; display:flex; align-items:center; gap:8px;
+}
+.kicker .num{
+  width:22px;height:22px;border-radius:50%; background:var(--brass); color:#fff;
+  display:flex; align-items:center; justify-content:center; font-size:.72rem; font-family:'Fraunces',serif;
+}
+h2.title{ font-size:1.9rem; margin-bottom:.35em;}
+h3.sub{ font-size:1.28rem; margin:2.4em 0 .6em; padding-top:.2em;}
+h3.sub:first-of-type{margin-top:1.2em;}
+.section-intro{ color:var(--ink-soft); font-size:1.02rem; max-width:640px; margin-bottom:1.6em;}
+
+/* ---------- Cards & grids ---------- */
+.grid{ display:grid; gap:16px; margin:20px 0;}
+.grid-2{ grid-template-columns:repeat(2,1fr);}
+.grid-3{ grid-template-columns:repeat(3,1fr);}
+.grid-4{ grid-template-columns:repeat(4,1fr);}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:20px 22px;
+  box-shadow:var(--shadow);
+}
+.card h4{ font-size:1.02rem; margin-bottom:.4em; color:var(--navy);}
+.card p{ font-size:.92rem; color:var(--ink-soft); margin-bottom:0;}
+.card .meta{
+  font-size:.72rem; color:var(--brass-deep); font-weight:600; margin-bottom:8px; text-transform:none;
+}
+.card ul{ margin:6px 0 0; padding-left:18px; font-size:.9rem; color:var(--ink-soft);}
+.card ul li{ margin-bottom:4px;}
+
+.pillcard{
+  border-left:3px solid var(--brass);
+}
+.pillcard.sage{border-left-color:var(--sage);}
+.pillcard.red{border-left-color:var(--red);}
+.pillcard.green{border-left-color:var(--green);}
+
+/* callouts */
+.callout{
+  background:var(--paper-deep);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:22px 24px;
+  margin:22px 0;
+  position:relative;
+}
+.callout .tag{
+  font-size:.72rem; font-weight:700; text-transform:none; color:var(--brass-deep); margin-bottom:8px; display:block;
+}
+.callout.case{ background:#FBF8EF; border-color:var(--brass-tint);}
+.callout.quote{
+  font-family:'Fraunces',serif; font-size:1.15rem; font-style:italic; color:var(--navy);
+  border-left:3px solid var(--brass); background:transparent; padding:6px 0 6px 22px; border-radius:0;
+}
+.callout.quote cite{ display:block; font-family:'Inter',sans-serif; font-style:normal; font-size:.78rem; color:var(--ink-soft); margin-top:8px;}
+
+/* key takeaways */
+.takeaways{
+  background:var(--navy);
+  color:#EDE7D6;
+  border-radius:var(--radius);
+  padding:26px 28px;
+  margin-top:34px;
+}
+.takeaways h4{ color:#F5EFDD; font-family:'Fraunces',serif; font-size:1.15rem; margin-bottom:14px;}
+.takeaways ol{ margin:0; padding-left:20px; display:grid; gap:10px;}
+.takeaways li{ font-size:.92rem; color:#C6CAD6;}
+.takeaways li b{ color:#F2EEE0; font-weight:600;}
+
+/* tables */
+.table-wrap{ overflow-x:auto; margin:18px 0;}
+table{ width:100%; border-collapse:collapse; font-size:.9rem; background:var(--card); border-radius:10px; overflow:hidden;}
+table th, table td{ text-align:left; padding:11px 14px; border-bottom:1px solid var(--line-soft); vertical-align:top;}
+table th{ background:var(--paper-deep); color:var(--navy); font-weight:600; font-size:.82rem;}
+table tr:last-child td{border-bottom:none;}
+
+/* flow / process chain */
+.flow{ display:flex; align-items:stretch; gap:0; margin:22px 0; flex-wrap:wrap;}
+.flow-step{
+  background:var(--card); border:1px solid var(--line); border-radius:12px;
+  padding:16px 18px; flex:1; min-width:150px; position:relative;
+}
+.flow-step h5{ font-family:'Fraunces',serif; font-size:.98rem; margin:0 0 6px; color:var(--navy);}
+.flow-step p{ font-size:.84rem; color:var(--ink-soft); margin:0;}
+.flow-arrow{
+  display:flex; align-items:center; justify-content:center; color:var(--brass); font-size:1.2rem; padding:0 8px; flex-shrink:0;
+}
+
+/* levels of change nested circles */
+.levels-wrap{ display:flex; justify-content:center; margin:32px 0 12px;}
+.levels{
+  width:340px; height:340px; border-radius:50%;
+  border:1.5px dashed var(--brass);
+  display:flex; align-items:center; justify-content:center;
+  position:relative;
+}
+.levels span.outer-label{
+  position:absolute; top:14px; left:50%; transform:translateX(-50%);
+  font-size:.72rem; color:var(--brass-deep); font-weight:600;
+}
+.lvl{ border-radius:50%; display:flex; align-items:center; justify-content:center; text-align:center;}
+.lvl-org{ width:270px; height:270px; background:var(--brass); color:#fff;}
+.lvl-group{ width:190px; height:190px; background:var(--sage); color:#fff;}
+.lvl-ind{ width:110px; height:110px; background:var(--navy); color:#F5EFDD;}
+.lvl b{ font-size:.86rem; font-weight:600; font-family:'Fraunces',serif;}
+.lvl-ind b{font-size:.78rem;}
+
+/* ERRC / four-box style 2x2 grids */
+.quad{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:20px 0;}
+.quad .qcard{
+  border-radius:12px; padding:18px 20px; border:1.5px solid transparent;
+}
+.quad .qcard h5{ font-family:'Fraunces',serif; font-size:1rem; margin:0 0 8px;}
+.quad .qcard ul{ margin:0; padding-left:18px; font-size:.87rem; color:var(--ink-soft);}
+.quad .qcard ul li{margin-bottom:4px;}
+.q-eliminate{ background:var(--red-tint); border-color:#E3BFB6;}
+.q-eliminate h5{color:var(--red);}
+.q-reduce{ background:var(--brass-tint); border-color:#DDBD84;}
+.q-reduce h5{color:var(--brass-deep);}
+.q-raise{ background:var(--green-tint); border-color:#B9D6C1;}
+.q-raise h5{color:var(--green);}
+.q-create{ background:var(--sage-tint); border-color:#BFCFC0;}
+.q-create h5{color:var(--sage);}
+.q-neutral{ background:var(--paper-deep); border-color:var(--line);}
+.q-neutral h5{color:var(--navy);}
+
+/* small tags */
+.tag-row{ display:flex; flex-wrap:wrap; gap:8px; margin:18px 0;}
+.tag{
+  background:var(--paper-deep); border:1px solid var(--line); border-radius:20px;
+  padding:6px 13px; font-size:.8rem; color:var(--ink-soft);
+}
+
+/* references table */
+.refs{ margin-top:16px;}
+.refs table td:first-child{ font-weight:600; color:var(--navy); white-space:nowrap;}
+
+/* divider */
+.divider{ display:flex; align-items:center; gap:14px; margin:46px 0 30px;}
+.divider .line{ flex:1; height:1px; background:var(--line);}
+.divider span{ font-family:'Fraunces',serif; font-size:1.05rem; color:var(--brass-deep);}
+
+/* ---------- Quiz ---------- */
+.quiz-panel{ display:none;}
+.quiz-panel.active{ display:block;}
+.filters{ display:flex; gap:10px; flex-wrap:wrap; margin:22px 0 8px;}
+.filter-btn{
+  border:1.5px solid var(--line); background:var(--card); color:var(--ink-soft);
+  padding:9px 16px; border-radius:24px; font-size:.86rem; font-weight:600; cursor:pointer;
+  transition:all .15s ease;
+}
+.filter-btn.selected{ background:var(--navy); color:#F2EEE0; border-color:var(--navy);}
+.filter-btn:hover:not(.selected){ border-color:var(--brass);}
+.start-row{ margin-top:26px; display:flex; align-items:center; gap:18px;}
+.btn-primary{
+  background:var(--brass); color:#fff; border:none; border-radius:10px;
+  padding:14px 28px; font-size:.98rem; font-weight:700; cursor:pointer;
+  box-shadow:0 6px 18px rgba(169,120,46,.28);
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+.btn-primary:hover{ transform:translateY(-1px); box-shadow:0 8px 22px rgba(169,120,46,.36);}
+.btn-primary:disabled{ opacity:.45; cursor:not-allowed; box-shadow:none; transform:none;}
+.btn-secondary{
+  background:transparent; border:1.5px solid var(--line); color:var(--navy);
+  border-radius:10px; padding:12px 22px; font-weight:600; font-size:.92rem; cursor:pointer;
+}
+.btn-secondary:hover{ border-color:var(--brass); color:var(--brass-deep);}
+.quiz-count-note{ font-size:.86rem; color:var(--ink-soft);}
+
+.qbar{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;}
+.qbar .qcounter{ font-size:.84rem; color:var(--ink-soft); font-weight:600;}
+.qbar .qscore{ font-size:.84rem; color:var(--brass-deep); font-weight:700;}
+.progressbar{ height:6px; background:var(--line-soft); border-radius:6px; overflow:hidden; margin-bottom:26px;}
+.progressbar > div{ height:100%; background:var(--brass); border-radius:6px; transition:width .25s ease;}
+
+.qcard-box{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+  padding:30px 32px; box-shadow:var(--shadow);
+}
+.qcard-box .qsession{ font-size:.75rem; font-weight:700; color:var(--brass-deep); margin-bottom:10px; display:block;}
+.qcard-box h3{ font-size:1.24rem; margin-bottom:22px; line-height:1.35;}
+.options{ display:flex; flex-direction:column; gap:10px;}
+.option-btn{
+  text-align:left; border:1.5px solid var(--line); background:var(--paper); border-radius:11px;
+  padding:14px 16px; font-size:.96rem; color:var(--ink); cursor:pointer;
+  display:flex; align-items:center; gap:12px; transition:border-color .12s ease, background .12s ease;
+}
+.option-btn .letter{
+  width:26px;height:26px;border-radius:50%; background:var(--card); border:1.5px solid var(--line);
+  display:flex; align-items:center; justify-content:center; font-size:.78rem; font-weight:700; color:var(--ink-soft); flex-shrink:0;
+}
+.option-btn:hover:not(:disabled){ border-color:var(--brass);}
+.option-btn:disabled{ cursor:default;}
+.option-btn.correct{ border-color:var(--green); background:var(--green-tint);}
+.option-btn.correct .letter{ background:var(--green); border-color:var(--green); color:#fff;}
+.option-btn.incorrect{ border-color:var(--red); background:var(--red-tint);}
+.option-btn.incorrect .letter{ background:var(--red); border-color:var(--red); color:#fff;}
+
+.explain{
+  margin-top:20px; padding:16px 18px; border-radius:10px; font-size:.9rem;
+  display:none;
+}
+.explain.show{ display:block;}
+.explain.ok{ background:var(--green-tint); color:#1F4B32;}
+.explain.ko{ background:var(--red-tint); color:#5E241A;}
+.explain b{display:block; margin-bottom:4px; font-size:.82rem;}
+
+.qfoot{ display:flex; justify-content:flex-end; margin-top:22px;}
+
+.result-hero{ text-align:center; padding:36px 20px 10px;}
+.result-hero .score-big{ font-family:'Fraunces',serif; font-size:3.4rem; color:var(--navy);}
+.result-hero .score-sub{ color:var(--ink-soft); margin-top:6px; font-size:1rem;}
+.result-actions{ display:flex; gap:14px; justify-content:center; margin:26px 0 10px;}
+.review-list{ display:grid; gap:12px; margin-top:30px;}
+.review-item{ border:1px solid var(--line); border-radius:12px; padding:16px 18px; background:var(--card);}
+.review-item.wrong{ border-left:4px solid var(--red);}
+.review-item.right{ border-left:4px solid var(--green);}
+.review-item .rq{ font-weight:600; margin-bottom:6px; font-size:.94rem;}
+.review-item .ra{ font-size:.85rem; color:var(--ink-soft);}
+.review-item .ra b{color:var(--navy);}
+
+/* footer of main */
+.pagefoot{ padding:34px 56px 64px; color:var(--ink-soft); font-size:.82rem;}
+
+/* ---------- Responsive ---------- */
+@media (max-width:980px){
+  .grid-3, .grid-4{ grid-template-columns:repeat(2,1fr);}
+  .quad{ grid-template-columns:1fr;}
+}
+@media (max-width:860px){
+  .sidebar{ transform:translateX(-100%); transition:transform .2s ease; box-shadow:0 0 40px rgba(0,0,0,.3);}
+  .sidebar.open{ transform:translateX(0);}
+  .main{ margin-left:0;}
+  .menu-toggle{ display:block;}
+  .section{ padding:48px 24px;}
+  .hero{ padding:96px 24px 56px;}
+  .hero h1{ font-size:2.2rem;}
+  .grid-2, .grid-3, .grid-4{ grid-template-columns:1fr;}
+  .flow{ flex-direction:column;}
+  .flow-arrow{ transform:rotate(90deg); padding:6px 0;}
+  .levels{ width:280px; height:280px;}
+  .lvl-org{ width:220px; height:220px;}
+  .lvl-group{ width:150px; height:150px;}
+  .lvl-ind{ width:88px; height:88px;}
+  .qcard-box{ padding:22px 18px;}
+}
+</style>
+<link rel="stylesheet" href="./assets/study-ui.css">
+<script src="./assets/lucide.min.js" defer></script>
+<script src="./assets/study-ui.js" defer></script>
+</head>
+<body>
+
+<button class="menu-toggle" id="menuToggle" aria-label="Ouvrir le menu">☰</button>
+
+<div class="shell">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="./index.html" aria-label="Accueil">
+      <div class="brand-mark"></div>
+      <div class="brand-text"><b>Strategic Change</b><span>Fiche de révision</span></div>
+    </a>
+    <a class="home-link" href="./index.html">
+      <span class="dot"></span>
+      Accueil
+    </a>
+    <nav class="nav" id="nav">
+      <a href="#home"><span class="dot"></span>Vue d'ensemble</a>
+      <div class="nav-group-label">Stratégie — S1 à S3</div>
+      <a href="#s1"><span class="dot"></span>S1 · Niveaux de changement</a>
+      <a href="#s2"><span class="dot"></span>S2 · Temporalité</a>
+      <a href="#s3"><span class="dot"></span>S3 · BMI &amp; disruption</a>
+      <div class="nav-group-label">Entraînement</div>
+      <a href="#quiz"><span class="dot"></span>Quiz &amp; auto-évaluation</a>
+    </nav>
+    <div class="sidebar-foot">IÉSEG — Strategic Change Management<br>Sessions 1, 2 &amp; 3 · Fiche personnelle</div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- HERO / HOME -->
+    <section class="hero" id="home">
+      <div class="eyebrow">Révisions QCM · Sessions 1–3</div>
+      <h1>Strategic Change Management</h1>
+      <p class="lede">Toutes les notions, exemples et cadres des trois premières sessions, réunis pour réviser efficacement — et un quiz pour tester ce qui est vraiment acquis.</p>
+      <div class="hero-stats">
+        <div class="hero-stat"><b>3</b><span>sessions couvertes</span></div>
+        <div class="hero-stat"><b>20+</b><span>cadres &amp; modèles</span></div>
+        <div class="hero-stat"><b>41</b><span>questions de quiz</span></div>
+      </div>
+      <div class="hero-line">
+        <div class="hero-node"><b>S1</b><span>Niveaux de changement organisationnel</span></div>
+        <div class="hero-connector"></div>
+        <div class="hero-node"><b>S2</b><span>Temporalité &amp; histoire</span></div>
+        <div class="hero-connector"></div>
+        <div class="hero-node"><b>S3</b><span>BMI &amp; disruption stratégique</span></div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SESSION 1 -->
+    <!-- ============================================================ -->
+    <section class="section" id="s1">
+      <div class="kicker"><span class="num">1</span>SESSION 1</div>
+      <h2 class="title">Introduction — Niveaux de changement organisationnel</h2>
+      <p class="section-intro">Lecture requise : R. Burke WW (2018), <em>Organization Change: Theory and Practice</em>, 5ᵉ éd., Sage — Ch. 6.</p>
+
+      <h3 class="sub">Qu'entend-on par « stratégie » ?</h3>
+      <p>La stratégie d'une entreprise s'exprime à travers son <b>positionnement</b>, son <b>ambition</b>, sa <b>culture</b> et son <b>identité</b>. Pour les dirigeants, elle est tournée vers l'avenir : « Comment devons-nous répondre aux défis et opportunités à venir ? » La stratégie n'est pas un plan figé : c'est un ensemble continu de choix sur où investir, quoi offrir, et ce que l'on veut devenir. Ces choix se ramènent à deux questions centrales :</p>
+      <div class="grid grid-2">
+        <div class="card pillcard"><h4>Où être en concurrence ?</h4><p>Marchés, segments, zones géographiques et partenaires que l'entreprise choisit d'engager.</p></div>
+        <div class="card pillcard sage"><h4>Comment être en concurrence ?</h4><p>Différenciation, position de coût, et capacités qui créent un avantage.</p></div>
+      </div>
+      <div class="grid grid-3">
+        <div class="card"><div class="meta">Positionnement</div><p>Espace occupé par rapport aux rivaux — premium vs. valeur, large vs. niche.</p></div>
+        <div class="card"><div class="meta">Ambition</div><p>Vision à long terme qui guide les décisions — ce que l'entreprise veut devenir.</p></div>
+        <div class="card"><div class="meta">Culture &amp; identité</div><p>Valeurs partagées et façons de travailler qui déterminent l'exécution de la stratégie.</p></div>
+      </div>
+      <p><b>Hiérarchie de la stratégie</b> — les choix stratégiques se déclinent en cascade sur trois niveaux :</p>
+      <div class="flow">
+        <div class="flow-step"><h5>Stratégie corporate</h5><p>Dans quels secteurs et marchés être présent.</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><h5>Stratégie business</h5><p>Comment gagner face aux rivaux sur chaque marché.</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><h5>Stratégie opérationnelle</h5><p>Processus et ressources qui livrent ce choix.</p></div>
+      </div>
+
+      <h3 class="sub">Stratégie et gestion du changement</h3>
+      <p>Trois questions clés à retenir : qu'est-ce que la stratégie business ? pourquoi se soucier de gérer le changement ? comment stratégie et gestion du changement sont-elles liées ?</p>
+      <div class="grid grid-2">
+        <div class="card"><h4>La stratégie définit le « quoi » et le « pourquoi »</h4><p>Vision, mission et objectifs stratégiques tracent la direction à long terme et impliquent intrinsèquement un passage d'un état actuel à un état désiré.</p></div>
+        <div class="card"><h4>La gestion du changement définit le « comment »</h4><p>Elle fournit l'approche, les outils et techniques nécessaires pour traduire la vision stratégique en étapes concrètes.</p></div>
+      </div>
+
+      <h3 class="sub">Caractéristiques contextuelles des programmes de changement stratégique</h3>
+      <p class="section-intro">D'après Balogun &amp; Hope Hailey (2004) — huit dimensions à évaluer avant de concevoir un programme de changement.</p>
+      <div class="grid grid-4">
+        <div class="card"><h4>Temps</h4><p>À quelle vitesse le changement doit-il intervenir ?</p></div>
+        <div class="card"><h4>Ampleur (scope)</h4><p>Quelle est l'étendue du changement nécessaire ?</p></div>
+        <div class="card"><h4>Préservation</h4><p>Quelles ressources et caractéristiques organisationnelles doivent être maintenues ?</p></div>
+        <div class="card"><h4>Diversité</h4><p>Quelle est l'homogénéité des équipes et divisions de l'organisation ?</p></div>
+        <div class="card"><h4>Capabilité</h4><p>Quelle est la capacité managériale et personnelle à mettre en œuvre le changement ?</p></div>
+        <div class="card"><h4>Capacité</h4><p>Quel est le degré de ressources disponibles pour le changement ?</p></div>
+        <div class="card"><h4>Disposition (readiness)</h4><p>Le personnel est-il prêt à changer ?</p></div>
+        <div class="card"><h4>Pouvoir</h4><p>Quel pouvoir le leader du changement a-t-il pour l'imposer ?</p></div>
+      </div>
+      <div class="callout">
+        <span class="tag">À retenir</span>
+        <p style="margin:0">Exemple donné en cours — <b>Préservation</b> : une entreprise logicielle en croissance qui formalise sa structure doit conserver l'expertise et la motivation de ses experts techniques, même si les nouveaux processus perturbent d'abord leurs habitudes de travail.</p>
+      </div>
+
+      <h3 class="sub">Cas d'étude — Twitter/X</h3>
+      <p>La résistance identifiée chez Twitter/X ne s'est pas produite en un seul endroit : elle est apparue <b>à plusieurs niveaux à la fois</b>.</p>
+      <div class="grid grid-3">
+        <div class="card pillcard"><h4>Organisation</h4><ul><li>Rebranding en X</li><li>Politique de modération assouplie</li><li>Pression financière (exode des annonceurs)</li></ul><p style="margin-top:8px"><em>Stratégie, marque, identité</em></p></div>
+        <div class="card pillcard sage"><h4>Groupe</h4><ul><li>L'équipe Trust &amp; Safety résiste à la modération plus souple</li><li>Les équipes d'ingénierie les plus touchées par les licenciements</li></ul><p style="margin-top:8px"><em>Identité d'équipe, territoire, allégeance</em></p></div>
+        <div class="card pillcard red"><h4>Individu</h4><ul><li>Licenciements soudains, communication abrupte</li><li>L'ultimatum « hardcore » sur les heures de travail</li></ul><p style="margin-top:8px"><em>Sécurité de l'emploi, équilibre vie pro/perso</em></p></div>
+      </div>
+
+      <h3 class="sub">Les niveaux de changement</h3>
+      <p>Le changement s'inscrit dans des cercles imbriqués, du plus large au plus étroit :</p>
+      <div class="levels-wrap">
+        <div class="levels">
+          <span class="outer-label">Système / champ</span>
+          <div class="lvl lvl-org">
+            <b style="align-self:flex-start; margin:14px 0 0 18px; position:absolute;">Organisation</b>
+            <div class="lvl lvl-group">
+              <b style="align-self:flex-start; margin:12px 0 0 14px; position:absolute;">Groupe</b>
+              <div class="lvl lvl-ind"><b>Individu</b></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="sub">Changement au niveau individuel</h3>
+      <p>Lorsque le changement entraîne une <b>perte de choix ou de liberté</b>, il peut provoquer de la résistance (Hambrick &amp; Cannella, 1989) :</p>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Type de résistance</th><th>Comment y répondre</th></tr>
+          <tr><td><b>Résistance aveugle</b> — peur de tout changement</td><td>Rassurance, faire preuve de patience</td></tr>
+          <tr><td><b>Résistance politique</b> — menace de perte (ressources ou statut)</td><td>Négociation, relier les pertes court terme aux gains long terme</td></tr>
+          <tr><td><b>Résistance idéologique</b> — doutes sur l'efficacité du changement</td><td>Expliquer, persuader, communiquer les jalons</td></tr>
+        </table>
+      </div>
+      <div class="callout quote">La résistance reste préférable à l'apathie.</div>
+
+      <h3 class="sub">Gérer la transition (Bridges, 1986)</h3>
+      <p>Les individus traversent trois phases pour lâcher prise et cesser de s'identifier à l'ancien modèle :</p>
+      <div class="flow">
+        <div class="flow-step"><h5>1. Renoncement (surrender)</h5><p>Il faut abandonner qui l'on est (rôle, titre, statut). Établir un sentiment d'urgence tout en permettant d'atteindre une clôture.</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><h5>2. No man's land</h5><p>Sentiment de non-sens, ambiguïté, confusion. Phase de réorientation et formation de nouveaux schémas psychologiques.</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><h5>3. Nouveau départ</h5><p>Nouvelles compétences et relations qui incarnent la nouvelle vision.</p></div>
+      </div>
+      <p style="font-size:.92rem; color:var(--ink-soft)">Tout le monde ne traverse pas ces phases avec la même facilité. <b>Impliquer les employés</b> dans le programme de changement stimule le sentiment d'appropriation (<em>ownership</em>).</p>
+
+      <h3 class="sub">Changement au niveau du groupe</h3>
+      <div class="grid grid-3">
+        <div class="card"><h4>Team-building</h4><p>Soutient le changement organisationnel plus large, notamment quand une équipe de spécialistes travaille sur des tâches complexes par synergie (1+1&gt;2).</p><ul><li>Usage maximal du capital personnel, interaction constructive</li><li>Piège potentiel : <b>pensée de groupe</b></li></ul></div>
+        <div class="card"><h4>Auto-gestion</h4><p>Les fonctions managériales traditionnelles (planification, coordination, staffing) sont déléguées aux membres du groupe.</p><ul><li>Le contrôle sur son travail favorise le bonheur</li><li>Pièges : ambiguïté des rôles, conflits de pouvoir</li></ul></div>
+        <div class="card"><h4>Dynamiques intergroupes</h4><p>Découlent de l'interdépendance des groupes pour atteindre les objectifs organisationnels.</p><ul><li>Transactions, négociation, coordination</li><li>Piège : conflit « factice » lié à l'anxiété, la peur de l'inconnu, les stéréotypes</li></ul></div>
+      </div>
+
+      <p><b>Réponses du groupe au changement organisationnel :</b></p>
+      <ul>
+        <li><b>Protection de territoire, compétition</b> — lutte pour la survie</li>
+        <li><b>Resserrement des rangs</b> — unification contre un « ennemi commun »</li>
+        <li><b>Changement d'allégeance ou de propriété</b> — volonté d'indépendance (spin-off), ou alliance avec une autre division</li>
+        <li><b>Demande d'un nouveau leadership</b> — remise en cause de l'agent du changement</li>
+      </ul>
+      <p><b>Aider les groupes à faire face au changement :</b></p>
+      <ul>
+        <li>Expliquer, fournir de l'information, lever l'ambiguïté</li>
+        <li>Permettre au groupe d'atteindre une clôture (sessions de groupe)</li>
+        <li>Implication, participation (ex. ateliers) pour renforcer l'appropriation</li>
+        <li>Recomposer le groupe en changeant sa composition (ajouter des compétences, réaffecter les membres les plus résistants)</li>
+      </ul>
+
+      <h3 class="sub">Changement au niveau de l'organisation</h3>
+      <p><b>Les ordres de changement :</b></p>
+      <div class="flow">
+        <div class="flow-step"><h5>1ᵉʳ ordre</h5><p>Modifications incrémentales au sein des structures, processus ou sous-systèmes existants (ex. une division).</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><h5>2ᵉ ordre</h5><p>Changements profonds/disruptifs exigeant un nouvel apprentissage et une progression non-linéaire d'un état à un autre.</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><h5>3ᵉ ordre</h5><p>Changement résultant d'une séquence de multiples facteurs — typiquement le résultat de changements de 1ᵉʳ/2ᵉ ordre soutenus sur une longue période.</p></div>
+      </div>
+      <p style="font-size:.92rem; color:var(--ink-soft)">Le changement à l'échelle de toute l'organisation reflète généralement un changement de <b>3ᵉ ordre</b>.</p>
+
+      <p><b>Réponses aux programmes de changement à grande échelle :</b></p>
+      <ul>
+        <li><b>La révolution devient évolution</b> — si les anciennes structures persistent, l'effort de changement perd de son élan</li>
+        <li><b>Sentiment d'urgence insuffisant</b> — le scepticisme mène à l'inaction (mais trop de scepticisme bloque la masse critique)</li>
+        <li><b>Tactiques de diversion</b> — soulever toutes sortes de problèmes sans rapport</li>
+        <li><b>Manque de soutien (followership)</b> — remise en question du leader et du changement proposé</li>
+      </ul>
+
+      <div class="takeaways">
+        <h4>Points clés — Session 1</h4>
+        <ol>
+          <li><b>Stratégie et changement sont liés :</b> la stratégie fixe le « quoi » et le « pourquoi », la gestion du changement fournit le « comment ».</li>
+          <li><b>Le contexte façonne le changement :</b> temps, ampleur, préservation, diversité, capabilité, capacité, disposition et pouvoir déterminent la conception d'un programme.</li>
+          <li><b>Le changement se produit à plusieurs niveaux à la fois :</b> individu, groupe et organisation — chacun exige une réponse différente.</li>
+          <li><b>La résistance est normale, pas un échec :</b> résistance aveugle, politique et idéologique appellent chacune une réponse différente — la résistance reste préférable à l'apathie.</li>
+          <li><b>L'ampleur change la nature du changement :</b> les changements de 1ᵉʳ, 2ᵉ et 3ᵉ ordre demandent des approches différentes.</li>
+        </ol>
+      </div>
+
+      <div class="table-wrap refs">
+        <p style="font-weight:600; margin:26px 0 6px; color:var(--navy)">Repères auteurs à connaître — Session 1</p>
+        <table>
+          <tr><td>Balogun &amp; Hope Hailey (2004)</td><td>8 caractéristiques contextuelles des programmes de changement stratégique</td></tr>
+          <tr><td>Hambrick &amp; Cannella (1989)</td><td>3 types de résistance individuelle : aveugle, politique, idéologique</td></tr>
+          <tr><td>Bridges (1986)</td><td>3 phases de transition : renoncement, no man's land, nouveau départ</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SESSION 2 -->
+    <!-- ============================================================ -->
+    <section class="section" id="s2">
+      <div class="kicker"><span class="num">2</span>SESSION 2</div>
+      <h2 class="title">Temporalité</h2>
+      <p class="section-intro">Lecture requise : Sasaki, I., Kotosaka, M., &amp; De Massis, A. (2024). <em>When Top Managers' Temporal Orientations Collide: Middle managers and the strategic use of the past.</em> Organization Studies, 45(6), 825-853.</p>
+      <p>Agenda : temps horloge vs. temps événement · mémoire organisationnelle et contexte historique · temporalité et changement.</p>
+
+      <div class="callout case">
+        <span class="tag">Cas d'étude — NASA</span>
+        <p style="margin:0">La sécurité est un aspect fondamental des opérations de la NASA (Terrier et al., 2017) : elle façonne jusqu'au contrôle de mission. La NASA ne ressent pas l'urgence d'adopter de nouvelles idées immédiatement : elle maintient les anciennes technologies aussi longtemps que possible comme filet de sécurité, tout en planifiant des missions qui s'étendent sur des décennies. <b>Question posée en cours :</b> qu'est-ce qui explique cette approche presque réticente de l'innovation technologique ?</p>
+      </div>
+
+      <h3 class="sub">Temps horloge vs. temps événement</h3>
+      <div class="grid grid-2">
+        <div class="card pillcard"><h4>Clock time</h4><p>Le temps comme continuum linéaire divisible en unités objectives et quantifiables (jours, semaines, années...). Le changement organisationnel est censé produire des résultats dans un délai donné — sinon il est jugé être un échec (Ancona et al., 2001).</p></div>
+        <div class="card pillcard sage"><h4>Event time</h4><p>Le moment « où » des actions, décisions ou tournants spécifiques se produisent. Le temps trouve son sens dans des événements importants (Hernes, 2017), ex. l'introduction d'une nouvelle politique ou d'un nouveau dirigeant. Le succès/échec d'une initiative de changement dépend fortement de « quand » elle intervient.</p></div>
+      </div>
+      <div class="callout">
+        <span class="tag">Discussion</span>
+        <p style="margin:0">Cas Volkswagen &amp; BP : pourquoi ces entreprises ont-elles dû initier un changement ? Comment le timing a-t-il été un facteur ?</p>
+      </div>
+
+      <h3 class="sub">Temporalité</h3>
+      <p><b>Temporalité :</b> la façon dont les individus traitent le passé, le présent ou le futur dans leur prise de décision (Bluedorn, 2002).</p>
+      <ul>
+        <li>Les structures profondes et le futur émergent d'une organisation dérivent souvent de sa <b>trajectoire historique</b> (Pettigrew, 1992).</li>
+        <li>Beaucoup de managers font face à un <b>« piège de la décision »</b> où ils étirent les activités temporelles actuelles au détriment du temps disponible pour les activités futures (Van Oorschot et al., 2013).</li>
+        <li>Des décisions qui semblaient bonnes à un moment donné peuvent devenir catastrophiques plus tard, lorsque d'autres événements interviennent (MacKay &amp; Chia, 2013).</li>
+        <li>L'équilibre entre préoccupations politiques et économiques peut évoluer au fil de la vie d'une organisation, favorisant différentes stratégies de management (Monin et al., 2013).</li>
+      </ul>
+
+      <h3 class="sub">Temporalité et changement</h3>
+      <p>L'orientation temporelle d'un agent du changement affecte son approche du changement :</p>
+      <div class="grid grid-3">
+        <div class="card"><h4>Focus futur</h4><p>Atteindre un état futur imaginé (Karniol &amp; Ross, 1996).</p></div>
+        <div class="card"><h4>Focus présent</h4><p>Mettre l'accent sur des objectifs proximaux à court terme (Strobel et al., 2013).</p></div>
+        <div class="card"><h4>Focus passé</h4><p>Achever ce qui est resté en suspens (Rafferty &amp; Restubog, 2010).</p></div>
+      </div>
+      <p><b>Profondeur temporelle</b> (Nadkarni et al., 2016) : jusqu'où, dans le passé et le futur, les individus ou collectifs remontent lorsqu'ils envisagent des voies d'action.</p>
+      <div class="grid grid-2">
+        <div class="card"><h4>Horizons courts</h4><p>Offrent de la flexibilité mais peuvent inciter au court-termisme.</p></div>
+        <div class="card"><h4>Horizons longs</h4><p>Apportent de la prévoyance managériale mais retardent l'adaptation.</p></div>
+      </div>
+
+      <h3 class="sub">Le travail temporel (temporal work)</h3>
+      <p>Trois dimensions de la temporalité que les acteurs utilisent pour structurer leurs activités (Wood et al., 2020) :</p>
+      <div class="flow">
+        <div class="flow-step"><h5>Initialisation</h5><p>Le moment jugé approprié par l'agent du changement pour lancer l'action.</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><h5>Rythme (pace)</h5><p>Le temps écoulé entre l'action initiale et le résultat désiré.</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><h5>Chronologie</h5><p>L'enchaînement des actions et événements vers la réalisation d'un jalon organisationnel.</p></div>
+      </div>
+      <p style="font-size:.92rem; color:var(--ink-soft)">Le travail temporel est un ingrédient clé des récits orientés changement.</p>
+
+      <div class="callout case">
+        <span class="tag">Cas d'étude — Starbucks</span>
+        <p style="margin:0">Interview du WSJ avec Brian Niccol (CEO), utilisée pour illustrer la façon dont un dirigeant articule passé, présent et futur dans son discours de changement.</p>
+      </div>
+
+      <div class="divider"><div class="line"></div><span>Contexte historique et stratégie</span><div class="line"></div></div>
+
+      <h3 class="sub">Exploiter l'histoire pour le changement stratégique</h3>
+      <p>La temporalité est associée à la façon dont le passé, le présent et le futur sont perçus, reliés et mis en action. L'histoire représente les événements, décisions, succès et échecs passés d'une organisation. C'est le <b>récit accumulé et la mémoire collective</b> qui façonnent le présent.</p>
+      <div class="tag-row">
+        <span class="tag">Pourquoi l'histoire compte-t-elle autant pour Patek Philippe et Coca-Cola ?</span>
+      </div>
+
+      <h3 class="sub">Pourquoi l'histoire est-elle importante ?</h3>
+      <p>Comprendre l'histoire aide à comprendre la position stratégique d'une organisation :</p>
+      <div class="grid grid-2">
+        <div class="card"><h4>Expérience organisationnelle des managers</h4><p>Les managers ayant passé de nombreuses années dans une organisation ou un secteur doivent pouvoir « prendre du recul » vis-à-vis de cette histoire pour comprendre son influence sur eux-mêmes et leurs collègues.</p></div>
+        <div class="card"><h4>Éviter le biais de récence</h4><p>Les managers peuvent accorder trop de poids aux événements récents, oubliant les schémas passés — d'où un optimisme ou un pessimisme excessif.</p></div>
+        <div class="card"><h4>Mauvaise attribution du succès</h4><p>Sait-on clairement d'où viennent les bases actuelles du succès, comment elles se sont développées, et comment cela peut informer la stratégie future ?</p></div>
+        <div class="card"><h4>Détecter et éviter la dérive stratégique</h4><p>En se sensibilisant à l'influence de leur histoire, les managers ont plus de chances de voir la stratégie actuelle comme ce que Henry Mintzberg décrit comme <em>« un motif dans un flux de décisions »</em>.</p></div>
+      </div>
+
+      <h3 class="sub">Dépendance de sentier (path dependency)</h3>
+      <p><b>Dépendance de sentier :</b> les événements et décisions précoces établissent des trajectoires qui ont des effets durables sur les événements et décisions ultérieurs. C'est une façon utile de penser le rôle et l'influence de l'histoire.</p>
+      <div class="callout">
+        <span class="tag">Exemple classique</span>
+        <p style="margin:0">Le clavier <b>QWERTY</b> : il existe des dispositions plus optimales, mais QWERTY est resté en usage dans la plupart des pays depuis plus de 150 ans, malgré la disparition des touches mécaniques et l'apparition des ordinateurs personnels.</p>
+      </div>
+      <p>Cela concerne aussi tout comportement qui trouve son origine dans le passé et devient ancré : dans un contexte organisationnel et stratégique, cela se traduit au fil du temps par des routines comportementales soutenues par du matériel et des technologies (systèmes de vente, marketing, recrutement, comptabilité, etc.).</p>
+
+      <h3 class="sub">Le verrouillage (lock-in)</h3>
+      <p>Le <b>lock-in</b> apparaît lorsque les aspects institutionnalisés de l'organisation se <b>renforcent mutuellement</b>, influençant le type de choix stratégiques qu'elle peut faire à l'avenir. Six éléments qui se renforcent entre eux :</p>
+      <div class="grid grid-3">
+        <div class="card">Technologie</div>
+        <div class="card">Objets : équipements, documents</div>
+        <div class="card">Comportement quotidien des personnes</div>
+        <div class="card">Formation et éducation</div>
+        <div class="card">Standards, règles, systèmes institutionnalisés</div>
+        <div class="card">Système de valeurs (ex. fournisseurs, clients)</div>
+      </div>
+      <p>Être conscient de la dépendance de sentier est crucial :</p>
+      <ul>
+        <li>Construire la stratégie autour des capacités « path dependent » développées au sein de l'organisation</li>
+        <li><b>Création de sentier :</b> chercher activement à modifier et dévier des façons de faire path-dependent au bénéfice de l'organisation — <b>aller trop loin peut être risqué</b></li>
+        <li>Innover à partir des capacités historiques</li>
+      </ul>
+
+      <div class="callout case">
+        <span class="tag">Cas d'étude — Jaguar</span>
+        <p style="margin:0">« Copy nothing » : discussion sur les choix stratégiques de Jaguar (repositionnement radical de marque) au regard de la dépendance de sentier et de l'histoire de la marque.</p>
+      </div>
+
+      <div class="takeaways">
+        <h4>Points clés — Session 2</h4>
+        <ol>
+          <li><b>Le temps n'est pas que le temps horloge :</b> le changement se juge aussi en temps événement — l'importance du <em>quand</em> plutôt que seulement la durée.</li>
+          <li><b>L'orientation temporelle d'un agent du changement façonne son approche :</b> passé, présent et futur mènent chacun à une stratégie de changement différente.</li>
+          <li><b>Le travail temporel est une compétence :</b> initialisation, rythme et chronologie doivent être gérés activement pour construire un récit de changement crédible.</li>
+          <li><b>L'histoire est un actif stratégique, pas juste un contexte :</b> elle aide les managers à éviter le biais de récence, la mauvaise attribution du succès et la dérive stratégique.</li>
+          <li><b>La dépendance de sentier peut enfermer les organisations :</b> les décisions passées ancrent routines et capacités — utile à exploiter, risqué à ignorer.</li>
+        </ol>
+      </div>
+
+      <div class="table-wrap refs">
+        <p style="font-weight:600; margin:26px 0 6px; color:var(--navy)">Repères auteurs à connaître — Session 2</p>
+        <table>
+          <tr><td>Ancona et al. (2001)</td><td>Clock time — échec si pas de résultat dans le délai imparti</td></tr>
+          <tr><td>Hernes (2017)</td><td>Event time — importance du « quand »</td></tr>
+          <tr><td>Bluedorn (2002)</td><td>Définition de la temporalité</td></tr>
+          <tr><td>Pettigrew (1992)</td><td>Structures profondes issues de la trajectoire historique</td></tr>
+          <tr><td>Van Oorschot et al. (2013)</td><td>Le « piège de la décision » (decision trap)</td></tr>
+          <tr><td>MacKay &amp; Chia (2013)</td><td>Décisions pouvant devenir catastrophiques avec le temps</td></tr>
+          <tr><td>Monin et al. (2013)</td><td>Équilibre politique/économique évoluant dans le temps</td></tr>
+          <tr><td>Karniol &amp; Ross (1996)</td><td>Focus temporel futur</td></tr>
+          <tr><td>Strobel et al. (2013)</td><td>Focus temporel présent</td></tr>
+          <tr><td>Rafferty &amp; Restubog (2010)</td><td>Focus temporel passé</td></tr>
+          <tr><td>Nadkarni et al. (2016)</td><td>Profondeur temporelle (temporal depth)</td></tr>
+          <tr><td>Wood et al. (2020)</td><td>Travail temporel : initialisation, rythme, chronologie</td></tr>
+          <tr><td>Mintzberg</td><td>Stratégie = « un motif dans un flux de décisions »</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SESSION 3 -->
+    <!-- ============================================================ -->
+    <section class="section" id="s3">
+      <div class="kicker"><span class="num">3</span>SESSION 3</div>
+      <h2 class="title">Business Model Innovation &amp; Strategic Disruption</h2>
+      <p class="section-intro">Lectures requises : Magretta, J. (2002). <em>Why Business Models Matter.</em> HBR, 80(5), 86–92 · Outil ERRC Grid (Blue Ocean Strategy).</p>
+      <p>Agenda : types et moteurs de la BMI (business model innovation) · disruption concurrentielle et pensée Blue Ocean · utiliser l'ERRC Grid pour cartographier un repositionnement stratégique.</p>
+
+      <h3 class="sub">Qu'est-ce qu'un business model ?</h3>
+      <p>Un business model est fondamentalement <b>une histoire</b>. Il répond aux questions historiques de Peter Drucker : qui est le client, ce qu'il valorise, et la logique économique sous-jacente. Magretta (2002) le présente comme une chaîne de valeur en deux parties : <b>fabriquer quelque chose</b> et <b>vendre quelque chose</b>.</p>
+      <div class="flow">
+        <div class="flow-step"><h5>Qui est le client ?</h5><p>Que valorise-t-il ?</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><h5>Fabriquer quelque chose</h5><p>Concevoir, sourcer, produire.</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><h5>Vendre quelque chose</h5><p>Atteindre les clients, transiger, livrer.</p></div>
+      </div>
+      <div class="callout">
+        <span class="tag">Comment gagnons-nous de l'argent ?</span>
+        <p style="margin:0">Quelle est la logique économique sous-jacente ? Deux tests : <b>l'histoire tient-elle debout</b>, et <b>le compte de résultat fonctionne-t-il</b> ?</p>
+      </div>
+      <p style="font-size:.9rem; color:var(--ink-soft)"><em>Un business model décrit l'architecture des mécanismes de création, de livraison et de capture de valeur employés.</em></p>
+
+      <div class="callout case">
+        <span class="tag">Cas d'étude — Peloton (WSJ « What Went Wrong »)</span>
+        <p style="margin:0">Un business model né de la pandémie qui n'a pas survécu au retour de la demande normale.</p>
+      </div>
+
+      <h3 class="sub">Quand les business models échouent</h3>
+      <div class="grid grid-2">
+        <div class="card pillcard red"><h4>Échec du récit — WeWork (2019)</h4><p>WeWork se présentait comme une entreprise technologique élevant « la conscience du monde ». En réalité, elle signait des baux longs et sous-louait des bureaux courts.</p><p>Lors de son introduction en bourse en 2019, les marchés ont vu l'écart instantanément. L'IPO a été retirée, la valorisation est passée de <b>47 Md$ à moins de 3 Md$</b>, et WeWork a fait faillite en 2023.</p><p><em>L'histoire ne tenait tout simplement pas debout.</em></p></div>
+        <div class="card pillcard"><h4>Échec des chiffres — Peloton (2021–2022)</h4><p>Le modèle de Peloton reposait sur la vente de matériel premium et la conversion des acheteurs en abonnés à 39$/mois. Valorisation de 50 Md$ pendant les confinements.</p><p>À la réouverture des salles de sport, les ventes de matériel se sont effondrées, les entrepôts se sont remplis de vélos invendus, et l'entreprise a enregistré une perte nette de <b>2,83 Md$</b> sur l'exercice 2022.</p><p><em>Les chiffres n'ont jamais fonctionné, quelle que soit la façon d'arranger les hypothèses.</em></p></div>
+      </div>
+
+      <h3 class="sub">Business model ≠ stratégie</h3>
+      <p><b>Business model :</b> décrit le système — comment toutes les pièces s'assemblent pour créer et délivrer de la valeur.<br><b>Stratégie :</b> explique comment on surperforme les rivaux — faire quelque chose qu'aucune autre entreprise ne fait, d'une façon difficile à dupliquer.</p>
+      <div class="grid grid-2">
+        <div class="card"><h4>Wal-Mart vs. Kmart</h4><p><b>Même business model :</b> discount retailing (peu d'agréments, libre-service, prix bas).<br><b>Stratégie différente :</b> Wal-Mart a ciblé les villes rurales isolées (5 000 à 25 000 hab.) avec des marques nationales à prix bas et une logistique supérieure. Kmart a voulu être tout pour tout le monde. L'un a prospéré, l'autre s'est effondré.</p></div>
+        <div class="card"><h4>Dell Computer</h4><p><b>Innovation du modèle EN TANT QUE stratégie :</b> vente directe aux clients finaux, en supprimant les revendeurs — donnant à Dell une gestion des stocks supérieure et des coûts d'obsolescence plus faibles.<br><b>Les rivaux ne pouvaient pas copier :</b> passer à la vente directe aurait détruit leurs propres canaux de distribution. Ils étaient piégés par leurs propres stratégies.</p></div>
+      </div>
+      <div class="callout quote">Un modèle peut être copié. La stratégie est ce qui vous rend différent et difficile à imiter.</div>
+
+      <h3 class="sub">Pourquoi la BMI est importante</h3>
+      <p>Une même technologie, commercialisée via deux business models différents, produit deux résultats économiques totalement différents.</p>
+      <div class="flow">
+        <div class="flow-step"><h5>Xerox PARC invente</h5><p>Interface graphique, souris, imprimante laser, Ethernet (années 1970) — technologies fondatrices du PC.</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><h5>Apple commercialise</h5><p>Construit l'interface graphique du Macintosh à partir des inventions de Xerox — le business model correspond à la technologie.</p></div>
+      </div>
+      <div class="grid grid-2">
+        <div class="card"><h4>Business model de Xerox</h4><p>Vendre et louer des photocopieurs — la logique de revenus ne peut pas absorber ces nouvelles technologies.</p></div>
+        <div class="card"><h4>Apple capture la valeur</h4><p>Le marché de l'informatique personnelle, construit sur la R&amp;D de Xerox.</p></div>
+      </div>
+      <p style="font-size:.9rem; color:var(--ink-soft)"><em>Les entreprises ont souvent des processus solides pour l'innovation produit/technologique, mais peu de capacité à innover leur business model. Cet écart explique pourquoi les innovateurs échouent souvent à tirer profit de leurs propres avancées.</em></p>
+
+      <h3 class="sub">Le piège de la logique dominante</h3>
+      <p>Les entreprises établies développent une <b>« logique dominante »</b> : un filtre cognitif construit sur le succès passé qui détermine ce qu'elles voient, dans quoi elles investissent, et ce qu'elles rejettent.</p>
+      <div class="grid grid-2">
+        <div class="card"><h4>Barrières physiques</h4><ul><li>Conflits avec les canaux de distribution ou partenaires existants</li><li>Cannibalisation des flux de revenus actuels</li><li>Allocation des ressources verrouillée sur les priorités du modèle actuel</li><li>Contrats et engagements existants qui contraignent le changement</li></ul></div>
+        <div class="card"><h4>Barrières cognitives</h4><ul><li>Incapacité à voir au-delà de la formule de profit actuelle : « c'est comme ça que fonctionne notre secteur »</li><li>Biais de succès : le modèle passé a réussi, donc supposé rester valide</li><li>Sous-évaluation des innovations qui ne correspondent pas à la logique de revenus actuelle</li><li>Identité du leadership liée au modèle existant (« nous sommes une entreprise X »)</li></ul></div>
+      </div>
+      <div class="callout case">
+        <span class="tag">Exemple classique — Kodak</span>
+        <p style="margin:0">Les ingénieurs de Kodak ont inventé l'appareil photo numérique en <b>1975</b>. Mais la logique dominante de Kodak était la pellicule, un modèle de consommable à forte marge. Le numérique menaçait ce modèle de façon existentielle. La technologie a été mise de côté. En <b>2012</b>, Kodak a fait faillite.</p>
+      </div>
+
+      <h3 class="sub">Trois façons d'innover son business model</h3>
+      <p>Un business model est un système d'activités interconnectées et interdépendantes. Changer n'importe quelle partie de ce système est une forme de BMI.</p>
+      <div class="grid grid-3">
+        <div class="card"><h4>1 · Ajouter de nouvelles activités</h4><p>Intégration en amont ou en aval ; entrer dans des marchés adjacents ou d'autres étapes de la chaîne de valeur.</p><p><em>Ex. Amazon passant de détaillant en ligne à fournisseur logistique, puis au cloud computing (AWS).</em></p></div>
+        <div class="card"><h4>2 · Relier les activités de façon inédite</h4><p>Nouveaux mécanismes de coordination, plateformes ou écosystèmes qui connectent les activités différemment.</p><p><em>Ex. L'App Store d'Apple reliant développeurs, utilisateurs et appareils via une seule plateforme.</em></p></div>
+        <div class="card"><h4>3 · Changer qui exécute les activités</h4><p>Externalisation, co-production avec des partenaires, ou un nouveau collaborateur qui réalise les activités différemment.</p><p><em>Ex. Marvel s'associant à Paramount pour la distribution des films.</em></p></div>
+      </div>
+
+      <h3 class="sub">Qu'est-ce qui rend une BMI durable ?</h3>
+      <p>Amit &amp; Zott (2012) identifient quatre moteurs de valeur qui déterminent si une innovation de business model crée un avantage durable, plutôt qu'un avantage rapidement copiable :</p>
+      <div class="grid grid-4">
+        <div class="card"><h4>Nouveauté</h4><p>Configurations d'activités nouvelles, inexistantes auparavant dans le secteur.</p></div>
+        <div class="card"><h4>Verrouillage (lock-in)</h4><p>Coûts de changement qui empêchent partenaires et clients de partir vers un rival.</p></div>
+        <div class="card"><h4>Complémentarités</h4><p>Activités qui se renforcent mutuellement, si bien que le tout vaut plus que la somme des parties.</p></div>
+        <div class="card"><h4>Efficience</h4><p>Réduction des coûts de transaction le long de la chaîne de valeur.</p></div>
+      </div>
+
+      <h3 class="sub">BMI et changement stratégique : le lien</h3>
+      <p>La BMI est l'une des formes de changement stratégique les plus puissantes — et les plus disruptives — car elle reconfigure toute la logique de création de valeur d'une entreprise, pas seulement un produit ou un processus.</p>
+      <p><b>Christensen et al. (2016) — le cadre des quatre cases du business model :</b></p>
+      <div class="quad">
+        <div class="qcard q-neutral"><h5>Proposition de valeur client</h5><p style="font-size:.87rem; color:var(--ink-soft); margin:0">Quel problème est résolu, et pourquoi mieux que les alternatives ?</p></div>
+        <div class="qcard q-neutral"><h5>Formule de profit</h5><p style="font-size:.87rem; color:var(--ink-soft); margin:0">Modèle de revenus, structure de coûts, modèle de marge, vitesse des ressources.</p></div>
+        <div class="qcard q-neutral"><h5>Ressources clés</h5><p style="font-size:.87rem; color:var(--ink-soft); margin:0">Personnes, technologie, produits, installations, marques, information.</p></div>
+        <div class="qcard q-neutral"><h5>Processus clés</h5><p style="font-size:.87rem; color:var(--ink-soft); margin:0">Formation, R&amp;D, fabrication, planification, budgétisation, conformité.</p></div>
+      </div>
+      <p><b>Pourquoi cela compte pour le changement stratégique :</b></p>
+      <ul>
+        <li>Une BMI incompatible avec le modèle actuel d'une entreprise rencontre une résistance interne <b>structurelle</b>, pas seulement culturelle</li>
+        <li>Les dirigeants doivent évaluer la compatibilité d'une BMI proposée avec les priorités du modèle actuel avant de la lancer</li>
+        <li>Cela guide les décisions : où loger l'initiative, comment la mesurer, si les processus existants la soutiendront ou l'éteindront</li>
+      </ul>
+
+      <div class="divider"><div class="line"></div><span>Outils &amp; application</span><div class="line"></div></div>
+
+      <h3 class="sub">Introduction à la Blue Ocean Strategy</h3>
+      <div class="grid grid-2">
+        <div class="card pillcard red"><h4>Océan rouge</h4><ul><li>Concurrencer dans un espace de marché existant et défini</li><li>Battre la concurrence sur des métriques existantes</li><li>Exploiter la demande existante</li><li>Faire le compromis valeur-coût : différenciation OU coût réduit</li><li>Aligner tout le système sur ce choix stratégique</li></ul><p style="margin-top:8px"><em>Résultat : les rivaux se battent pour une part de demande existante, les marges s'érodent.</em></p></div>
+        <div class="card pillcard green"><h4>Océan bleu</h4><ul><li>Créer un espace de marché inexploité, rendre la concurrence non pertinente</li><li>Créer et capturer une nouvelle demande</li><li>Rompre le compromis valeur-coût</li><li>Aligner tout le système pour poursuivre différenciation ET coût réduit</li></ul><p style="margin-top:8px"><em>Résultat : crée une demande nouvelle et incrémentale plutôt que de redistribuer la demande existante.</em></p></div>
+      </div>
+      <p><b>Innovation-valeur :</b> plutôt que de se battre pour la demande existante, l'innovation-valeur rend la concurrence non pertinente en créant un saut de valeur pour les acheteurs et l'entreprise. Les océans bleus naissent typiquement non pas de percées technologiques seules, mais de la <b>réinvention du business model</b> (Kim &amp; Mauborgne, 2004/2005).</p>
+
+      <h3 class="sub">Le cadre des quatre actions</h3>
+      <p>Avant de construire l'ERRC Grid, il faut comprendre les quatre questions qui la structurent — chacune remet en cause la logique sectorielle existante.</p>
+      <div class="quad">
+        <div class="qcard q-eliminate"><h5>Éliminer</h5><p style="font-size:.87rem; color:var(--ink-soft); margin:0 0 8px">Quels facteurs, sur lesquels le secteur se bat depuis longtemps, devraient être éliminés ?</p><p style="font-size:.85rem; margin:0"><em>Cirque du Soleil : élimination des stars, des numéros d'animaux, des pistes multiples.</em></p></div>
+        <div class="qcard q-raise"><h5>Renforcer (raise)</h5><p style="font-size:.87rem; color:var(--ink-soft); margin:0 0 8px">Quels facteurs devraient être portés bien au-dessus du standard du secteur ?</p><p style="font-size:.85rem; margin:0"><em>Cirque du Soleil : qualité artistique, expérience du lieu, narration thématique.</em></p></div>
+        <div class="qcard q-reduce"><h5>Réduire</h5><p style="font-size:.87rem; color:var(--ink-soft); margin:0 0 8px">Quels facteurs devraient être réduits bien en dessous du standard du secteur ?</p><p style="font-size:.85rem; margin:0"><em>Southwest Airlines : service repas, variété de classes de sièges, connectivité aux hubs.</em></p></div>
+        <div class="qcard q-create"><h5>Créer</h5><p style="font-size:.87rem; color:var(--ink-soft); margin:0 0 8px">Quels facteurs, jamais offerts par le secteur, devraient être créés ?</p><p style="font-size:.85rem; margin:0"><em>Marvel : un univers cinématographique interconnecté, une catégorie inédite.</em></p></div>
+      </div>
+
+      <h3 class="sub">L'ERRC Grid — vue d'ensemble de l'outil</h3>
+      <p>L'ERRC Grid (Éliminer-Réduire-Renforcer-Créer) est l'outil analytique central de la Blue Ocean Strategy. Il rend le cadre des quatre actions actionnable en demandant aux managers de remplir les quatre sections simultanément.</p>
+      <ul>
+        <li>Cartographier les activités et facteurs clés du business model actuel dans les quatre sections</li>
+        <li><b>Éliminer &amp; Réduire d'abord</b> — cela libère des ressources pour financer Renforcer &amp; Créer</li>
+        <li>Chaque entrée doit être spécifique, pas « réduire les coûts » mais ex. « réduire la force de vente en magasin »</li>
+        <li>La grille doit raconter une histoire cohérente : ce que l'on arrête de faire finance ce que l'on commence à faire</li>
+        <li>Modèle disponible sur : blueoceanstrategy.com/tools/errc-grid</li>
+      </ul>
+
+      <h3 class="sub">Cas — Marvel dans les années 1990</h3>
+      <p>Marvel Entertainment a déposé le bilan (Chapitre 11) en <b>décembre 1996</b>. Une entreprise possédant certaines des propriétés intellectuelles les plus reconnaissables au monde n'avait plus de trésorerie.</p>
+      <div class="flow">
+        <div class="flow-step"><h5>PI Marvel</h5><p>Spider-Man, X-Men, Hulk — licenciées pour des frais fixes + petites royalties.</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><h5>Fox, Sony, Universal, New Line</h5><p>X-Men, Spider-Man, Hulk et autres propriétés.</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><h5>Les studios captent l'essentiel du box-office</h5><p>Marvel dépose le bilan en décembre 1996.</p></div>
+      </div>
+      <div class="callout">
+        <span class="tag">Le piège de la logique dominante</span>
+        <p style="margin:0">L'identité de Marvel était « une entreprise de comics et de licences ». Même quand ses personnages généraient des milliards pour d'autres, l'organisation ne pouvait pas se voir comme un studio de cinéma capable de produire des films.</p>
+      </div>
+
+      <h3 class="sub">Le mouvement Blue Ocean de Marvel — le partenariat Paramount</h3>
+      <p>Sous le nouveau CEO Peter Cuneo (post-faillite), Marvel a pris une décision qui a transformé son business model : arrêter d'être licencieur, devenir studio.</p>
+      <div class="flow">
+        <div class="flow-step"><h5>1 · Financement</h5><p>525 M$ de financement de production auprès de Merrill Lynch Commercial Finance Corp. — Marvel finance ses films sans dépendre de l'argent des studios ni céder le contrôle créatif.</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><h5>2 · Partenariat de distribution</h5><p>Accord signé avec Paramount Pictures. Paramount gère la distribution mondiale contre des frais ; Marvel conserve la propriété de la production, le contrôle créatif et la majorité des revenus.</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><h5>3 · Premier film : Iron Man (2008)</h5><p>Produit par Marvel Studios, distribué par Paramount. Budget ~140 M$. Box-office mondial : 585 M$. Lance le Marvel Cinematic Universe.</p></div>
+      </div>
+      <p style="font-size:.9rem; color:var(--ink-soft)"><em>Type de BMI : principalement le mécanisme 3 — changer qui exécute les activités. Marvel a restructuré toute sa chaîne de valeur, en internalisant la production et en ne conservant Paramount que pour la distribution — passant de bénéficiaire de royalties à propriétaire de studio.</em></p>
+
+      <h3 class="sub">L'ERRC Grid de Marvel — exemple complet</h3>
+      <p>Cartographie de la transformation du business model de Marvel, de licencieur de PI à studio de divertissement intégré :</p>
+      <div class="quad">
+        <div class="qcard q-eliminate">
+          <h5>Éliminer</h5>
+          <ul>
+            <li>Dépendance envers des studios tiers pour le contrôle créatif et financier</li>
+            <li>Architecture de revenus limitée aux royalties (frais de licence fixes)</li>
+            <li>Cession des droits box-office, streaming et dérivés aux licenciés</li>
+          </ul>
+        </div>
+        <div class="qcard q-reduce">
+          <h5>Réduire</h5>
+          <ul>
+            <li>Nombre de personnages licenciés à des studios concurrents</li>
+            <li>Dépendance aux produits dérivés comme source de revenus principale</li>
+            <li>Négociation de deals au coup par coup par personnage (remplacée par une stratégie de franchise)</li>
+          </ul>
+        </div>
+        <div class="qcard q-raise">
+          <h5>Renforcer</h5>
+          <ul>
+            <li>Propriété créative et cohérence narrative sur toutes les propriétés</li>
+            <li>Part des revenus box-office, vidéo à domicile et streaming</li>
+            <li>Capital de marque via une interprétation cohérente des personnages</li>
+          </ul>
+        </div>
+        <div class="qcard q-create">
+          <h5>Créer</h5>
+          <ul>
+            <li>Capacité de production cinématographique interne (Marvel Studios)</li>
+            <li>Univers cinématographique interconnecté, une catégorie de produit inédite</li>
+            <li>Modèle de partenariat direct studio-distributeur (accord Paramount)</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="sub">Discussion — ce qui a rendu la BMI de Marvel si difficile</h3>
+      <div class="callout quote">Les business models, par nature, sont conçus pour ne pas changer — et deviennent moins flexibles et plus résistants au changement à mesure qu'ils mûrissent.<cite>Christensen, Bartman &amp; Van Bever (2016)</cite></div>
+      <div class="grid grid-2">
+        <div class="card"><h4>Identité</h4><p>« Nous sommes une entreprise de comics, pas un studio de cinéma. » L'identité organisationnelle liée au modèle existant crée une résistance cognitive profonde à la transformation.</p></div>
+        <div class="card"><h4>Écart de capacités</h4><p>Aucune production, réalisation, casting ou infrastructure de studio en interne. Le nouveau modèle exigeait des capacités que Marvel ne possédait pas.</p></div>
+        <div class="card"><h4>Risque financier</h4><p>La facilité de dette de 525 M$ créait un risque de perte catastrophique. Si Iron Man avait échoué, Marvel aurait fait face à une seconde faillite, terminale.</p></div>
+        <div class="card"><h4>Risque lié aux parties prenantes</h4><p>Les partenaires de licence existants (Fox, Sony, Universal) devenaient de facto des concurrents, mettant en péril les relations avant que le nouveau modèle ait fait ses preuves.</p></div>
+      </div>
+
+      <h3 class="sub">Pourquoi les partenariats permettent la BMI</h3>
+      <p>Les partenariats sont l'un des mécanismes les plus courants par lesquels les entreprises établies tentent l'innovation de business model, souvent parce qu'ils permettent d'accéder à des capacités absentes en interne :</p>
+      <ul>
+        <li>Accéder à des capacités absentes du modèle actuel (ex. Marvel avait la PI mais pas la capacité de production)</li>
+        <li>Partager le risque financier lié à l'entrée dans une nouvelle étape du business model</li>
+        <li>Tester de nouvelles configurations d'activités sans engagement interne complet</li>
+        <li>Légitimité : un partenaire crédible signale la viabilité aux parties prenantes et investisseurs</li>
+        <li>Vitesse : acquérir des capacités via un partenaire est plus rapide que de les construire en interne</li>
+      </ul>
+
+      <h3 class="sub">Risques des partenariats dans la BMI</h3>
+      <ul>
+        <li><b>Conflit de capture de valeur :</b> qui capte la valeur créée par le partenariat ?</li>
+        <li><b>Dépendance aux capacités :</b> dépendre d'un partenaire pour des activités clés limite la flexibilité stratégique</li>
+        <li><b>Désalignement culturel :</b> des organisations différentes peuvent avoir des logiques dominantes incompatibles</li>
+        <li><b>Asymétrie de pouvoir :</b> le partenaire le plus important peut absorber ou rediriger l'innovation à son propre avantage</li>
+        <li><b>Incohérence du modèle :</b> le partenariat peut ajouter des activités qui entrent en conflit avec la logique du modèle existant de l'entreprise</li>
+      </ul>
+
+      <h3 class="sub">À quoi ressemble une ERRC Grid solide</h3>
+      <div class="grid grid-2">
+        <div class="card"><h4>Spécifique</h4><p>Chaque entrée nomme un facteur concret, pas « réduire les coûts » mais « réduire la dépendance aux distributeurs tiers pour le commerce physique ». Des entrées vagues signalent une analyse superficielle.</p></div>
+        <div class="card"><h4>Ancrée</h4><p>Chaque entrée est reliée à un aspect réel et documenté du business model actuel ou proposé de l'entreprise. Les entrées doivent être vérifiables à partir de sources fiables.</p></div>
+        <div class="card"><h4>Équilibrée</h4><p>Les quatre quadrants sont remplis. Si « Éliminer » est vide, l'analyse est presque certainement incomplète — il faut chercher plus loin ce que l'entreprise arrête vraiment de faire.</p></div>
+        <div class="card"><h4>Cohérente</h4><p>La grille raconte une histoire : Éliminer/Réduire doit logiquement libérer des ressources ou capacités qui financent/permettent les mouvements Renforcer/Créer. La logique doit se connecter.</p></div>
+      </div>
+      <div class="callout"><span class="tag">Non-évidente</span><p style="margin:0">Une grille solide révèle quelque chose qui nécessite de l'analyse pour être vu, pas seulement ce que dit le communiqué de presse. <b>Erreur fréquente :</b> confondre les améliorations opérationnelles avec des changements de business model. La BMI consiste à reconfigurer l'architecture de valeur, pas seulement à faire les mêmes choses plus efficacement.</p></div>
+
+      <div class="takeaways">
+        <h4>Points clés — Session 3</h4>
+        <ol>
+          <li><b>Business model ≠ stratégie :</b> le business model décrit le système ; la stratégie explique comment on surperforme les rivaux avec ou au-delà de ce système. Les deux sont nécessaires et doivent être mutuellement cohérents.</li>
+          <li><b>La BMI détermine qui capte la valeur :</b> une même technologie, commercialisée via deux business models différents, produit deux résultats économiques totalement différents.</li>
+          <li><b>Les business models sont conçus pour ne pas changer :</b> leur rigidité les rend efficients — et résistants au changement stratégique. Le piège de la logique dominante explique pourquoi les acteurs en place ne s'autodisruptent souvent pas.</li>
+          <li><b>Trois mécanismes de BMI :</b> ajouter de nouvelles activités ; relier les activités de façon inédite ; changer qui exécute les activités.</li>
+        </ol>
+      </div>
+
+      <div class="table-wrap refs">
+        <p style="font-weight:600; margin:26px 0 6px; color:var(--navy)">Repères auteurs à connaître — Session 3</p>
+        <table>
+          <tr><td>Magretta (2002)</td><td>Business model = chaîne de valeur « fabriquer + vendre » ; deux tests : histoire &amp; P&amp;L</td></tr>
+          <tr><td>Amit &amp; Zott (2012)</td><td>4 moteurs de valeur de la BMI durable : Nouveauté, Lock-in, Complémentarités, Efficience</td></tr>
+          <tr><td>Christensen, Bartman &amp; Van Bever (2016)</td><td>Cadre des 4 cases du business model ; les BM sont conçus pour ne pas changer</td></tr>
+          <tr><td>Kim &amp; Mauborgne (2004 / 2005)</td><td>Blue Ocean Strategy, innovation-valeur, cadre des 4 actions (ERRC)</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- QUIZ -->
+    <!-- ============================================================ -->
+    <section class="section" id="quiz">
+      <div class="kicker"><span class="num">Q</span>ENTRAÎNEMENT</div>
+      <h2 class="title">Quiz &amp; auto-évaluation</h2>
+      <p class="section-intro">41 questions couvrant les trois sessions. Choisissez ce que vous voulez réviser, puis testez-vous — feedback immédiat et corrigé à la fin.</p>
+
+      <!-- START PANEL -->
+      <div class="quiz-panel active" id="panel-start">
+        <p style="font-weight:600; color:var(--navy); margin-bottom:8px;">Quelles sessions voulez-vous réviser ?</p>
+        <div class="filters" id="filters">
+          <button class="filter-btn selected" data-filter="all">Toutes les sessions (41)</button>
+          <button class="filter-btn" data-filter="1">Session 1 — Niveaux (14)</button>
+          <button class="filter-btn" data-filter="2">Session 2 — Temporalité (13)</button>
+          <button class="filter-btn" data-filter="3">Session 3 — BMI (14)</button>
+        </div>
+        <div class="start-row">
+          <button class="btn-primary" id="startBtn">Commencer le quiz</button>
+          <span class="quiz-count-note" id="countNote">41 questions sélectionnées</span>
+        </div>
+      </div>
+
+      <!-- PLAY PANEL -->
+      <div class="quiz-panel" id="panel-play">
+        <div class="qbar">
+          <span class="qcounter" id="qCounter">Question 1 / 41</span>
+          <span class="qscore" id="qScore">Score : 0</span>
+        </div>
+        <div class="progressbar"><div id="progressFill" style="width:0%"></div></div>
+        <div class="qcard-box">
+          <span class="qsession" id="qSession">Session 1</span>
+          <h3 id="qText">Question</h3>
+          <div class="options" id="qOptions"></div>
+          <div class="explain" id="qExplain"></div>
+        </div>
+        <div class="qfoot">
+          <button class="btn-primary" id="nextBtn" disabled>Question suivante</button>
+        </div>
+      </div>
+
+      <!-- END PANEL -->
+      <div class="quiz-panel" id="panel-end">
+        <div class="result-hero">
+          <div class="score-big" id="finalScore">0 / 0</div>
+          <div class="score-sub" id="finalMsg">Résultat</div>
+          <div class="result-actions">
+            <button class="btn-primary" id="restartBtn">Recommencer</button>
+            <button class="btn-secondary" id="reviewToggle">Voir le corrigé détaillé</button>
+          </div>
+        </div>
+        <div class="review-list" id="reviewList" style="display:none;"></div>
+      </div>
+    </section>
+
+    <div class="pagefoot">Fiche de révision réalisée à partir des supports de cours — Sessions 1, 2 &amp; 3, Strategic Change Management, IÉSEG.</div>
+  </main>
+</div>
+
+<script>
+/* ---------------- Quiz data ---------------- */
+const QUESTIONS = [
+// ---- SESSION 1 ----
+{s:1, q:"Selon le cours, à quelles deux questions centrales se ramènent finalement les choix stratégiques ?", o:["Croître ou stagner / investir ou désinvestir","Où être en concurrence ? / Comment être en concurrence ?","Vendre ou fabriquer / interne ou externe","Long terme ou court terme / local ou global"], a:1, e:"La stratégie se ramène à deux questions : où être en concurrence (marchés, géographies, partenaires) et comment être en concurrence (différenciation, coûts, capacités)."},
+{s:1, q:"Quel est l'ordre correct de la hiérarchie de la stratégie ?", o:["Opérationnelle → Business → Corporate","Business → Corporate → Opérationnelle","Corporate → Business → Opérationnelle","Corporate → Opérationnelle → Business"], a:2, e:"La hiérarchie va du corporate (quels secteurs/marchés) au business (comment gagner face aux rivaux) puis à l'opérationnel (processus et ressources)."},
+{s:1, q:"Qui a développé le modèle des huit « caractéristiques contextuelles » d'un programme de changement stratégique (temps, ampleur, préservation, diversité, capabilité, capacité, disposition, pouvoir) ?", o:["Bridges (1986)","Hambrick & Cannella (1989)","Balogun & Hope Hailey (2004)","Kim & Mauborgne (2004)"], a:2, e:"Ce modèle des 8 dimensions contextuelles est attribué à Balogun & Hope Hailey (2004)."},
+{s:1, q:"Laquelle des caractéristiques contextuelles pose la question « Quelles ressources et caractéristiques organisationnelles doivent être maintenues ? »", o:["Capacité","Préservation","Diversité","Readiness"], a:1, e:"La Préservation concerne les compétences clés et caractéristiques à conserver pour le développement futur de l'organisation."},
+{s:1, q:"Dans le cas Twitter/X étudié en cours, le rebranding en X, l'assouplissement de la modération et la pression des annonceurs relèvent de quel niveau de changement ?", o:["Individu","Groupe","Organisation","Système/champ"], a:2, e:"Ces éléments (stratégie, marque, identité) relèvent du niveau organisationnel."},
+{s:1, q:"Dans le modèle des « niveaux de changement » vu en cours, quel est l'ordre des cercles, du plus large au plus étroit ?", o:["Individu > Groupe > Organisation > Système/champ","Système/champ > Organisation > Groupe > Individu","Organisation > Système/champ > Groupe > Individu","Groupe > Organisation > Individu > Système/champ"], a:1, e:"Le modèle va du plus large (système/champ) à l'organisation, puis au groupe, puis à l'individu."},
+{s:1, q:"D'après Hambrick & Cannella (1989), quel type de résistance individuelle correspond à « une menace de perte de ressources ou de statut » ?", o:["Résistance aveugle","Résistance politique","Résistance idéologique","Résistance systémique"], a:1, e:"La résistance politique naît de la menace de perte de ressources ou de statut ; elle se traite par la négociation."},
+{s:1, q:"Quelle est la meilleure réponse à une résistance idéologique (doutes sur l'efficacité du changement) ?", o:["Rassurance, patience","Négociation, relier pertes court terme et gains long terme","Expliquer, persuader, communiquer les jalons","Ignorer et avancer"], a:2, e:"La résistance idéologique se traite par l'explication, la persuasion et la communication des étapes/jalons."},
+{s:1, q:"Selon le cours, la résistance est...", o:["Toujours un échec du management","Pire que l'apathie","Toujours préférable à l'apathie","Sans rapport avec la gestion du changement"], a:2, e:"« La résistance est encore préférable à l'apathie » — un message clé du cours."},
+{s:1, q:"Quel est l'ordre correct des trois phases de transition selon Bridges (1986) ?", o:["No man's land → Renoncement → Nouveau départ","Renoncement → No man's land → Nouveau départ","Nouveau départ → Renoncement → No man's land","Renoncement → Nouveau départ → No man's land"], a:1, e:"Les 3 phases sont : Renoncement (surrender), No man's land, puis Nouveau départ."},
+{s:1, q:"Dans le team-building comme forme de changement au niveau du groupe, quel est le principal piège potentiel identifié en cours ?", o:["La pensée de groupe (groupthink)","L'ambiguïté des rôles","Le conflit factice","La sous-performance individuelle"], a:0, e:"Le team-building maximise l'usage du capital personnel mais expose au risque de pensée de groupe (groupthink)."},
+{s:1, q:"Quel ordre de changement organisationnel désigne des « modifications incrémentales au sein des structures existantes » ?", o:["1ᵉʳ ordre","2ᵉ ordre","3ᵉ ordre","Aucun de ces ordres"], a:0, e:"Le 1ᵉʳ ordre correspond à des modifications incrémentales dans les structures, processus ou sous-systèmes existants."},
+{s:1, q:"Le changement à l'échelle de toute une organisation (organization-wide) reflète typiquement quel ordre de changement ?", o:["1ᵉʳ ordre uniquement","2ᵉ ordre uniquement","3ᵉ ordre","Aucun ordre défini"], a:2, e:"Le changement à l'échelle de l'organisation reflète typiquement un changement de 3ᵉ ordre, résultat de facteurs sur la durée."},
+{s:1, q:"Parmi les réponses possibles à un programme de changement à grande échelle, laquelle correspond à « soulever toutes sortes de problèmes sans rapport » ?", o:["Manque de followership","Tactiques de diversion","Insuffisance du sentiment d'urgence","La révolution devient évolution"], a:1, e:"Les tactiques de diversion consistent à soulever des problèmes non liés pour freiner le changement."},
+
+// ---- SESSION 2 ----
+{s:2, q:"Selon Ancona et al. (2001), le concept de « clock time » (temps horloge) implique que le changement organisationnel...", o:["N'a pas besoin de délai précis","Est jugé être un échec s'il ne produit pas de résultats dans un délai donné","Se juge uniquement par des événements marquants","N'est jamais évalué"], a:1, e:"Avec le clock time, un changement qui ne produit pas de résultats dans un délai donné est considéré comme un échec."},
+{s:2, q:"Le concept d'« event time » (temps événement), évoqué via Hernes (2017), met l'accent sur...", o:["La durée exacte en mois/années","Le moment (« quand ») où des actions ou décisions significatives surviennent","Le budget alloué au changement","Le nombre d'employés impliqués"], a:1, e:"L'event time souligne l'importance du « quand » un événement significatif se produit (ex. nouvelle politique, nouveau leader)."},
+{s:2, q:"Qui définit la « temporalité » comme la façon dont les individus traitent le passé, le présent ou le futur dans leur prise de décision ?", o:["Bluedorn (2002)","Pettigrew (1992)","Wood et al. (2020)","Nadkarni et al. (2016)"], a:0, e:"Bluedorn (2002) définit la temporalité comme la manière de gérer passé/présent/futur dans la décision."},
+{s:2, q:"D'après Pettigrew (1992), les structures profondes et le futur émergent d'une organisation dérivent souvent de...", o:["Sa taille actuelle","Sa trajectoire historique","Son secteur d'activité","Son organigramme"], a:1, e:"Pettigrew (1992) souligne que les structures profondes dérivent de la trajectoire historique de l'organisation."},
+{s:2, q:"Le « piège de la décision » (decision trap), où les managers étirent les activités présentes au détriment du temps disponible pour le futur, est décrit par...", o:["Van Oorschot et al. (2013)","MacKay & Chia (2013)","Monin et al. (2013)","Karniol & Ross (1996)"], a:0, e:"Van Oorschot et al. (2013) décrivent ce piège de la décision."},
+{s:2, q:"Quel focus temporel d'un agent du changement correspond à « achever ce qui est resté en suspens » (Rafferty & Restubog, 2010) ?", o:["Focus futur","Focus présent","Focus passé","Focus systémique"], a:2, e:"Le focus passé vise à compléter des affaires inachevées (unfinished business)."},
+{s:2, q:"La notion de « profondeur temporelle » (temporal depth), c'est-à-dire jusqu'où l'on remonte dans le passé et le futur pour envisager une action, est développée par...", o:["Nadkarni et al. (2016)","Strobel et al. (2013)","Ancona et al. (2001)","Bluedorn (2002)"], a:0, e:"Nadkarni et al. (2016) introduisent la profondeur temporelle."},
+{s:2, q:"Des horizons temporels courts offrent de la flexibilité mais risquent d'inciter à...", o:["La prévoyance managériale","Le court-termisme","Un excès d'analyse","Un excès de prudence"], a:1, e:"Les horizons courts apportent de la flexibilité mais peuvent inciter au court-termisme."},
+{s:2, q:"Selon Wood et al. (2020), quelles sont les trois dimensions du « travail temporel » (temporal work) ?", o:["Passé, présent, futur","Vitesse, direction, intensité","Initialisation, rythme (pace), chronologie","Ambition, culture, identité"], a:2, e:"Wood et al. (2020) identifient l'initialisation, le rythme (pace) et la chronologie comme les 3 dimensions du travail temporel."},
+{s:2, q:"L'exemple du clavier QWERTY, resté dominant plus de 150 ans malgré des dispositions plus optimales, illustre le concept de...", o:["Innovation-valeur","Dépendance de sentier (path dependency)","Résistance idéologique","Temps horloge"], a:1, e:"QWERTY est l'exemple classique de dépendance de sentier : des choix précoces qui persistent longtemps."},
+{s:2, q:"Selon le cours, comprendre l'histoire d'une organisation aide notamment à éviter...", o:["Le biais de récence et la mauvaise attribution du succès","Les coûts de transaction","La dépendance de sentier uniquement","La création de nouveaux produits"], a:0, e:"L'histoire aide à éviter le biais de récence, la mauvaise attribution du succès et la dérive stratégique."},
+{s:2, q:"Selon Henry Mintzberg, la stratégie peut être décrite comme...", o:["Une réponse aux forces du marché","Un motif dans un flux de décisions","Un plan figé sur 5 ans","Une allocation optimale des ressources"], a:1, e:"Mintzberg décrit la stratégie comme « un motif dans un flux de décisions » (a pattern in a stream of decisions)."},
+{s:2, q:"Dans le cas de la NASA discuté en cours, la réticence à adopter rapidement de nouvelles technologies s'explique avant tout par...", o:["Un manque de budget","La priorité donnée à la sécurité","L'absence de concurrents","Une décision politique ponctuelle"], a:1, e:"La sécurité est un aspect fondamental des opérations de la NASA, qui façonne son rythme d'adoption technologique."},
+
+// ---- SESSION 3 ----
+{s:3, q:"Selon Magretta (2002), un business model se décrit comme une chaîne de valeur en deux parties :", o:["Financer et investir","Fabriquer quelque chose et vendre quelque chose","Recruter et former","Concevoir et breveter"], a:1, e:"Magretta (2002) décrit le business model comme « faire quelque chose » (make) et « vendre quelque chose » (sell)."},
+{s:3, q:"Quels sont les deux tests permettant de vérifier si un business model fonctionne réellement ?", o:["Le brevet et la marque","L'histoire tient-elle debout, et le compte de résultat fonctionne-t-il","Le nombre d'employés et le chiffre d'affaires","La part de marché et la notoriété"], a:1, e:"Les deux tests évoqués sont : est-ce que l'histoire (la logique) tient debout, et est-ce que le P&L (compte de résultat) fonctionne."},
+{s:3, q:"L'échec de WeWork (2019) est présenté en cours comme un exemple typique de...", o:["Échec des chiffres (numbers failure)","Échec du récit (narrative failure)","Échec technologique","Échec de gouvernance uniquement"], a:1, e:"WeWork prétendait être une entreprise technologique alors qu'elle signait des baux longs et sous-louait à court terme : l'histoire ne tenait pas debout."},
+{s:3, q:"L'échec de Peloton (2021-2022) est présenté comme un exemple typique de...", o:["Échec du récit (narrative failure)","Échec des chiffres (numbers failure)","Échec de fabrication","Échec réglementaire"], a:1, e:"Le modèle économique de Peloton (matériel + abonnement) ne fonctionnait pas financièrement une fois la demande pandémique retombée : perte nette de 2,83 Md$."},
+{s:3, q:"Dans l'exemple Wal-Mart vs. Kmart, les deux entreprises partageaient le même business model (discount retailing) mais différaient par leur...", o:["Structure juridique","Stratégie (ciblage géographique, logistique)","Nombre de magasins uniquement","Système comptable"], a:1, e:"Même business model, mais Wal-Mart a ciblé stratégiquement les zones rurales isolées avec une logistique supérieure, contrairement à Kmart."},
+{s:3, q:"Chez Dell, l'innovation du business model (vente directe, sans revendeurs) a fonctionné comme :", o:["Une simple réduction de coûts","La stratégie elle-même, difficile à copier par les rivaux","Un échec de distribution","Une décision purement financière"], a:1, e:"Chez Dell, l'innovation du modèle EST la stratégie : les rivaux ne pouvaient pas copier sans détruire leurs propres canaux."},
+{s:3, q:"L'exemple Xerox PARC / Apple illustre principalement que :", o:["La technologie seule détermine le succès économique","Une même technologie, selon le business model qui la commercialise, produit des résultats économiques très différents","Xerox n'a jamais innové","Apple a copié illégalement Xerox"], a:1, e:"Même technologie (interface graphique, souris...), mais deux business models différents ont produit deux résultats économiques opposés."},
+{s:3, q:"En quelle année les ingénieurs de Kodak ont-ils inventé l'appareil photo numérique, resté ensuite dans les tiroirs à cause de la logique dominante de l'entreprise ?", o:["1975","1996","2001","2012"], a:0, e:"Kodak a inventé l'appareil photo numérique en 1975 mais l'a mis de côté ; l'entreprise a fait faillite en 2012."},
+{s:3, q:"Parmi les trois mécanismes de BMI vus en cours, lequel correspond le mieux au partenariat Marvel-Paramount pour la distribution des films ?", o:["Ajouter de nouvelles activités","Relier les activités de façon inédite","Changer qui exécute les activités","Réduire les activités existantes"], a:2, e:"Le partenariat avec Paramount pour la distribution illustre le mécanisme « changer qui exécute les activités »."},
+{s:3, q:"Selon Amit & Zott (2012), lequel de ces éléments NE fait PAS partie des quatre moteurs de valeur d'une BMI durable ?", o:["Nouveauté","Lock-in","Diversité","Efficience"], a:2, e:"Les 4 moteurs sont Nouveauté, Lock-in, Complémentarités et Efficience — pas la Diversité (qui est un critère du modèle Balogun & Hope Hailey, session 1)."},
+{s:3, q:"Dans le cadre des quatre actions (ERRC), l'exemple de Southwest Airlines (service repas réduit, moins de classes de sièges) illustre l'action :", o:["Éliminer","Réduire","Renforcer","Créer"], a:1, e:"Southwest Airlines a réduit ces facteurs bien en dessous du standard du secteur, sans les éliminer totalement."},
+{s:3, q:"Marvel Entertainment a déposé le bilan (Chapitre 11) en :", o:["Décembre 1996","Juin 2005","Mai 2008","Janvier 1999"], a:0, e:"Marvel a fait faillite en décembre 1996, avant sa transformation stratégique sous Peter Cuneo."},
+{s:3, q:"Pour financer la production de ses films avant l'accord Paramount, Marvel a obtenu un financement de :", o:["140 millions de dollars","525 millions de dollars","585 millions de dollars","47 milliards de dollars"], a:1, e:"Marvel a sécurisé 525 millions de dollars de financement de production avec Merrill Lynch Commercial Finance Corp."},
+{s:3, q:"Parmi les facteurs qui ont rendu la BMI de Marvel particulièrement difficile, lequel concerne le risque que les partenaires de licence (Fox, Sony, Universal) deviennent des concurrents ?", o:["Identité","Écart de capacités","Risque financier","Risque lié aux parties prenantes"], a:3, e:"Le risque lié aux parties prenantes concerne le fait que les licenciés existants devenaient de facto des concurrents."}
+];
+
+/* ---------------- Quiz engine ---------------- */
+const startPanel = document.getElementById('panel-start');
+const playPanel = document.getElementById('panel-play');
+const endPanel = document.getElementById('panel-end');
+const filterBtns = document.querySelectorAll('.filter-btn');
+const startBtn = document.getElementById('startBtn');
+const countNote = document.getElementById('countNote');
+
+let currentFilter = 'all';
+let quizQueue = [];
+let qIndex = 0;
+let score = 0;
+let answers = []; // {q, chosen, correct}
+
+function countFor(filter){
+  if(filter === 'all') return QUESTIONS.length;
+  return QUESTIONS.filter(q => String(q.s) === filter).length;
+}
+filterBtns.forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    filterBtns.forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected');
+    currentFilter = btn.dataset.filter;
+    countNote.textContent = countFor(currentFilter) + " questions sélectionnées";
+  });
+});
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+startBtn.addEventListener('click', ()=>{
+  quizQueue = currentFilter === 'all' ? shuffle(QUESTIONS) : shuffle(QUESTIONS.filter(q=>String(q.s)===currentFilter));
+  qIndex = 0; score = 0; answers = [];
+  startPanel.classList.remove('active');
+  endPanel.classList.remove('active');
+  playPanel.classList.add('active');
+  renderQuestion();
+});
+
+const qCounter = document.getElementById('qCounter');
+const qScoreEl = document.getElementById('qScore');
+const progressFill = document.getElementById('progressFill');
+const qSessionEl = document.getElementById('qSession');
+const qTextEl = document.getElementById('qText');
+const qOptionsEl = document.getElementById('qOptions');
+const qExplainEl = document.getElementById('qExplain');
+const nextBtn = document.getElementById('nextBtn');
+const letters = ['A','B','C','D'];
+
+function renderQuestion(){
+  const item = quizQueue[qIndex];
+  qCounter.textContent = `Question ${qIndex+1} / ${quizQueue.length}`;
+  qScoreEl.textContent = `Score : ${score}`;
+  progressFill.style.width = (qIndex/quizQueue.length*100) + '%';
+  qSessionEl.textContent = 'Session ' + item.s;
+  qTextEl.textContent = item.q;
+  qOptionsEl.innerHTML = '';
+  qExplainEl.className = 'explain';
+  qExplainEl.innerHTML = '';
+  nextBtn.disabled = true;
+  nextBtn.textContent = (qIndex === quizQueue.length-1) ? 'Voir les résultats' : 'Question suivante';
+
+  item.o.forEach((opt, idx)=>{
+    const b = document.createElement('button');
+    b.className = 'option-btn';
+    b.innerHTML = `<span class="letter">${letters[idx]}</span><span>${opt}</span>`;
+    b.addEventListener('click', ()=> selectAnswer(idx, item, b));
+    qOptionsEl.appendChild(b);
+  });
+}
+
+function selectAnswer(idx, item, btnEl){
+  const allBtns = qOptionsEl.querySelectorAll('.option-btn');
+  allBtns.forEach(b => b.disabled = true);
+  const correct = idx === item.a;
+  if(correct) score++;
+  allBtns[item.a].classList.add('correct');
+  if(!correct) btnEl.classList.add('incorrect');
+
+  qExplainEl.classList.add('show', correct ? 'ok' : 'ko');
+  qExplainEl.innerHTML = `<b>${correct ? 'Bonne réponse' : 'Pas tout à fait'}</b>${item.e}`;
+  nextBtn.disabled = false;
+  answers.push({q:item.q, chosen: item.o[idx], correctAns: item.o[item.a], correct, exp:item.e, session:item.s});
+}
+
+nextBtn.addEventListener('click', ()=>{
+  qIndex++;
+  if(qIndex >= quizQueue.length){
+    finishQuiz();
+  } else {
+    renderQuestion();
+  }
+});
+
+const finalScoreEl = document.getElementById('finalScore');
+const finalMsgEl = document.getElementById('finalMsg');
+const reviewList = document.getElementById('reviewList');
+const reviewToggle = document.getElementById('reviewToggle');
+const restartBtn = document.getElementById('restartBtn');
+
+function finishQuiz(){
+  playPanel.classList.remove('active');
+  endPanel.classList.add('active');
+  progressFill.style.width = '100%';
+  const total = quizQueue.length;
+  finalScoreEl.textContent = `${score} / ${total}`;
+  const pct = Math.round(score/total*100);
+  let msg;
+  if(pct >= 90) msg = `Excellent (${pct}%) — cette matière est maîtrisée.`;
+  else if(pct >= 70) msg = `Bien (${pct}%) — quelques notions à consolider.`;
+  else if(pct >= 50) msg = `Moyen (${pct}%) — relisez les fiches avant l'examen.`;
+  else msg = `À retravailler (${pct}%) — reprenez les sessions concernées.`;
+  finalMsgEl.textContent = msg;
+
+  reviewList.innerHTML = '';
+  answers.forEach(a=>{
+    const div = document.createElement('div');
+    div.className = 'review-item ' + (a.correct ? 'right' : 'wrong');
+    div.innerHTML = `
+      <div class="rq">S${a.session} — ${a.q}</div>
+      <div class="ra">${a.correct ? 'Votre réponse : <b>'+a.chosen+'</b> ✓' : 'Votre réponse : <b>'+a.chosen+'</b> — Bonne réponse : <b>'+a.correctAns+'</b>'}</div>
+      <div class="ra" style="margin-top:6px">${a.exp}</div>
+    `;
+    reviewList.appendChild(div);
+  });
+  reviewList.style.display = 'none';
+  reviewToggle.textContent = 'Voir le corrigé détaillé';
+}
+
+reviewToggle.addEventListener('click', ()=>{
+  const shown = reviewList.style.display !== 'none';
+  reviewList.style.display = shown ? 'none' : 'grid';
+  reviewToggle.textContent = shown ? 'Voir le corrigé détaillé' : 'Masquer le corrigé';
+});
+
+restartBtn.addEventListener('click', ()=>{
+  endPanel.classList.remove('active');
+  startPanel.classList.add('active');
+});
+</script>
+</body>
+</html>
