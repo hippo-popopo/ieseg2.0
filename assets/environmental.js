@@ -90,6 +90,7 @@
     if(search.value.trim()){searchView();return;}
     const [active,anchor]=(location.hash.slice(1)||'overview').split('/');
     const c=chapters.find(c=>c.id===active);navigation(c?c.id:active);
+    if(ENV_LEARNING.routes.includes(active)){navigation(active==='priorities'?'overview':active==='rebuild'?'exam':'overview');ENV_LEARNING.render(main,active);document.title=`${{priorities:'Les incontournables',rebuild:'Listes à reconstruire','concept-map':'Carte des notions'}[active]} · Environmental Management`;if(focus){main.focus({preventScroll:true});window.scrollTo({top:0,behavior:'instant'});}return;}
     if(c)chapter(c);else if(active==='essentials'){navigation('overview');notions();}else if(active==='recall')recall();else if(active==='exam')exam();else if(active==='sources')sourceView();else{navigation('overview');overview();}
     document.title=`${c?c.title:({essentials:'Toutes les notions',recall:'Rappel actif',exam:'Examen blanc',sources:'Sources'}[active]||'Environmental Management')} · IÉSEG 2.0`;
     if(focus){main.focus({preventScroll:true});if(anchor&&(c?.sections.some(s=>s.id===anchor)||(active==='essentials'&&ENV_NOTIONS.some(ch=>`notions-${ch.id}`===anchor)))){requestAnimationFrame(()=>document.getElementById(anchor)?.scrollIntoView({behavior:'instant',block:'start'}));}else window.scrollTo({top:0,behavior:'instant'});}

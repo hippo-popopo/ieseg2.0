@@ -20,7 +20,7 @@
       if(heading){const note=document.createElement('p');note.id='study-publication-note';note.className='study-publication-note';note.textContent='Les documents originaux de l’école ne sont pas publiés. Ils restent accessibles depuis la version locale ; les fiches et exercices sont disponibles ici.';heading.after(note);}
     }
   }
-  const icons=()=>{window.lucide?.createIcons({attrs:{'aria-hidden':'true','stroke-width':1.7}});publicationLinks();};
+  const icons=()=>{if(env){const stats=document.querySelector('.study-overview .study-stats');if(stats&&!document.querySelector('.learning-shortcuts')){const shortcuts=document.createElement('nav');shortcuts.className='learning-shortcuts';shortcuts.setAttribute('aria-label','Révision ciblée');shortcuts.innerHTML='<a href="#priorities"><i data-lucide="bookmark-check" aria-hidden="true"></i>Incontournables</a><a href="#rebuild"><i data-lucide="list-checks" aria-hidden="true"></i>Listes à reconstruire</a><a href="#concept-map"><i data-lucide="network" aria-hidden="true"></i>Carte des notions</a>';stats.after(shortcuts);}}window.lucide?.createIcons({attrs:{'aria-hidden':'true','stroke-width':1.7}});publicationLinks();};
   const exam=env?'exam':'quiz';
   let main=document.querySelector('main');
   let saved={done:{},known:{}};
@@ -44,6 +44,7 @@
   const nav=originalNav||document.createElement('nav');nav.id='chapter-nav';nav.setAttribute('aria-label','Chapitres');nav.className='study-chapters';
   document.getElementById('study-nav-slot').replaceWith(nav);
   if(env){const memo=document.createElement('a');memo.href='#essentials';memo.className='study-memo-link';memo.innerHTML=icon('list')+'Toutes les notions';nav.before(memo);}
+  if(env){const learning=document.createElement('a');learning.href='#priorities';learning.className='study-memo-link study-learning-link';learning.innerHTML=icon('bookmark-check')+'Révision ciblée';nav.before(learning);}
   const progress=originalProgress||document.createElement('div');progress.className='study-progress';
   if(!env)progress.innerHTML=`<label for="course-progress">Chapitres révisés <span id="progress-label"></span></label><progress id="course-progress" max="${course.chapters.length}" value="0"></progress>`;
   document.getElementById('study-progress-slot').replaceWith(progress);
@@ -68,8 +69,9 @@
   window.StudyUI={overview,icons};
   function sync(){
     const active=(location.hash.slice(1)||'overview').split('/')[0];
-    const view=['recall',exam,'sources'].includes(active)?active:'overview';
+    const view=active==='rebuild'?exam:['recall',exam,'sources'].includes(active)?active:'overview';
     const memoLink=document.querySelector('.study-memo-link');if(memoLink){if(active==='essentials')memoLink.setAttribute('aria-current','page');else memoLink.removeAttribute('aria-current');}
+    const learningLink=document.querySelector('.study-learning-link');if(learningLink){if(['priorities','rebuild','concept-map'].includes(active))learningLink.setAttribute('aria-current','page');else learningLink.removeAttribute('aria-current');}
     document.querySelectorAll('.study-tabs a').forEach(a=>{if(a.dataset.view===view)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
     if(!env){
       nav.innerHTML=course.chapters.map(([id,title],i)=>`<a href="#${id}" ${id===active?'aria-current="page"':''}><span class="nav-number">${String(i+1).padStart(2,'0')}</span><span>${title}</span><span class="nav-check">${saved.done[id]?'✓':''}</span></a>`).join('');
