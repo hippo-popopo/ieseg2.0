@@ -1,6 +1,6 @@
 # IESEG 2.0
 
-Personal revision hub for Strategic Change Management, Positive Leadership and Environmental Management.
+Personal revision hub for Strategic Change Management, Positive Leadership, Environmental Management and Sustainable Finance.
 
 Open `index.html` directly in a browser. No build step or local server is needed.
 
@@ -22,6 +22,10 @@ With Node, Playwright and Chrome installed:
 
 ```sh
 node tests/study-ui.test.cjs
+node tests/environmental-learning.test.cjs
+node tests/finance.test.cjs
 ```
+
+Sustainable Finance covers the seven supplied PDFs (352 pages) in eight chapters, with 193 memo terms, 48 recall cards, 30 practice questions and NPV/WACC/IPV calculators. Its Sources view records missing materials and distinguishes historical course regulation from checked updates. Content lives in `assets/finance-content*.js`; shared recall and chapter progress retain stable IDs when new material is added. Quiz answers use the separate `ieseg-finance-practice-v1` browser key.
 
 Generated artwork provenance is documented in `assets/generation.md`. The locally bundled Lucide library retains its license in `assets/lucide-LICENSE`.

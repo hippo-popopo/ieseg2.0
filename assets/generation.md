@@ -1,5 +1,9 @@
 # Hub illustrations
 
+## Sustainable Finance
+
+`finance-transparent.png` was generated with the built-in GPT Image tool on 2026-10-13. Transparent PNG, brushed brass coins, sage ceramic sprout and ivory chart, matching the existing course icons. The illustration is decorative, not a measured financial series. Pedagogical flows and tables use accessible HTML with selectable text.
+
 ## Environmental Management
 
 Generated using the built-in GPT Image tool for this revision course. The retained assets are transparent PNG cutouts, with no enclosing tile or colored background.

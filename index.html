@@ -393,7 +393,7 @@ h1{font-size:2.25rem;}
 </style>
 <link rel="stylesheet" href="./assets/study-ui.css">
 <script src="./assets/lucide.min.js" defer></script>
-<script src="./assets/study-ui.js" defer></script>
+<script src="./assets/study-ui.js?v=finance-1" defer></script>
 </head>
 <body>
 <div class="shell">
@@ -421,7 +421,7 @@ h1{font-size:2.25rem;}
       </div>
       <div class="tools">
         <input class="search" id="courseSearch" type="search" placeholder="Rechercher un cours" aria-label="Rechercher un cours">
-        <div class="course-count" id="courseCount" aria-live="polite">3 cours disponibles</div>
+        <div class="course-count" id="courseCount" aria-live="polite">4 cours disponibles</div>
       </div>
     </header>
 
@@ -461,15 +461,13 @@ h1{font-size:2.25rem;}
           <div class="chips"><span>Fiches</span><span>Rappel actif</span><span>Examen blanc</span></div>
         </a>
 
-        <article class="course empty">
-          <div class="course-top">
-            <div class="course-code">C4</div>
-            <span class="badge">À ajouter</span>
-          </div>
-          <h2>Cours 4</h2>
-          <p>En attente</p>
-          <div class="chips"><span>Vide</span></div>
-        </article>
+        <a class="course featured" href="./revision-sustainable-finance.html" data-course="sustainable finance corporate durable esg npv ipv wacc investissement reporting stewardship">
+          <img class="course-art" src="./assets/finance-transparent.png" alt="" width="200" height="200">
+          <div class="course-top"><div class="course-code">SF</div><span class="badge ready">Disponible</span></div>
+          <h2>Sustainable Finance</h2>
+          <p>ESG, investissement &amp; création de valeur</p>
+          <div class="chips"><span>Fiches</span><span>Mémo</span><span>Calculs &amp; quiz</span></div>
+        </a>
 
         <article class="course empty">
           <div class="course-top">

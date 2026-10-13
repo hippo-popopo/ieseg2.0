@@ -3,11 +3,14 @@
   const courses = [
     {key:'strategic',title:'Strategic Change Management',file:'revision-strategic-change-management.html',art:'strategy-transparent.png',lead:'Niveaux de changement, temporalité et innovation des business models.',chapters:[['s1','Niveaux de changement','Session 1'],['s2','Temporalité & histoire','Session 2'],['s3','BMI & disruption','Session 3']]},
     {key:'positive',title:'Positive Leadership',file:'revision-positive-leadership.html',art:'leadership-transparent.png',lead:'Structurer l’action, comprendre les personnes et construire des relations de confiance.',chapters:[['task','Tâches & stratégie','Task-oriented leadership'],['styles','Styles de leadership','Leadership styles'],['lmx','Relations & LMX','Relational leadership'],['trust','Confiance','Trust & psychological safety'],['motivation','Motivation','Motivation profiles'],['emotions','Émotions & EI','Emotional intelligence']]},
-    {key:'environmental',title:'Environmental Management',file:'revision-environmental-management.html',art:'environmental-transparent.png',lead:'Des limites planétaires aux décisions de l’entreprise.',chapters:[]}
+    {key:'environmental',title:'Environmental Management',file:'revision-environmental-management.html',art:'environmental-transparent.png',lead:'Des limites planétaires aux décisions de l’entreprise.',chapters:[]},
+    {key:'finance',title:'Sustainable Finance',file:'revision-sustainable-finance.html',art:'finance-transparent.png',lead:'Relier les impacts, les risques et la création de valeur.',chapters:[]}
   ];
   const course=courses.find(c=>location.pathname.endsWith(c.file));
   const env=course?.key==='environmental';
   if(env) course.chapters=ENV.chapters.map(c=>[c.id,c.title,c.subtitle]);
+  const finance=course?.key==='finance';
+  if(finance) course.chapters=FIN.chapters.map(c=>[c.id,c.title,c.subtitle]);
   const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const icon=name=>`<i data-lucide="${name}" aria-hidden="true"></i>`;
   function publicationLinks(){
@@ -45,6 +48,7 @@
   document.getElementById('study-nav-slot').replaceWith(nav);
   if(env){const memo=document.createElement('a');memo.href='#essentials';memo.className='study-memo-link';memo.innerHTML=icon('list')+'Toutes les notions';nav.before(memo);}
   if(env){const learning=document.createElement('a');learning.href='#priorities';learning.className='study-memo-link study-learning-link';learning.innerHTML=icon('bookmark-check')+'Révision ciblée';nav.before(learning);}
+  if(finance){const shortcuts=document.createElement('nav');shortcuts.setAttribute('aria-label','Accès rapide');shortcuts.innerHTML=`<a class="study-memo-link" href="#essentials">${icon('list')}Toutes les notions</a><a class="study-memo-link" href="#calculator">${icon('calculator')}Calculs financiers</a>`;nav.before(shortcuts);}
   const progress=originalProgress||document.createElement('div');progress.className='study-progress';
   if(!env)progress.innerHTML=`<label for="course-progress">Chapitres révisés <span id="progress-label"></span></label><progress id="course-progress" max="${course.chapters.length}" value="0"></progress>`;
   document.getElementById('study-progress-slot').replaceWith(progress);
@@ -65,13 +69,14 @@
   const status=document.createElement('p');status.id='study-storage';status.className='study-storage';status.hidden=true;status.setAttribute('role','status');status.textContent='Sauvegarde locale indisponible. Ta progression reste disponible pendant cette session.';page.append(status);
   if(!document.querySelector('.skip')){const skip=document.createElement('a');skip.href='#main';skip.className='skip';skip.textContent='Aller au contenu';document.body.prepend(skip);}
   document.getElementById('study-print').onclick=()=>window.print();
-  const overview=()=>`<section class="study-overview"><header class="study-heading"><div class="study-eyebrow">Cours ${String(courses.indexOf(course)+1).padStart(2,'0')}</div><h1>${course.title}</h1><p>${course.lead}</p><img src="./assets/${course.art}" alt="" width="180" height="180"></header><div class="study-stats"><span><b>${course.chapters.length}</b> chapitres</span><span><b>${env?46:course.key==='positive'?30:41}</b> rappels actifs</span><a href="#${exam}">${env?'Examen blanc · 20 points':'Quiz corrigé'}</a></div><div class="study-chapter-list">${course.chapters.map(([id,title,sub],i)=>`<a class="study-chapter-tile" href="#${id}"><span class="study-number">${String(i+1).padStart(2,'0')}</span><div><h2>${title}</h2><p>${sub}</p></div>${icon('arrow-up-right')}</a>`).join('')}</div>${course.key==='positive'?'<a class="study-extra" href="#recap">Les huit repères pour l’examen →</a>':''}</section>`;
+  const overview=()=>`<section class="study-overview"><header class="study-heading"><div class="study-eyebrow">Cours ${String(courses.indexOf(course)+1).padStart(2,'0')}</div><h1>${course.title}</h1><p>${course.lead}</p><img src="./assets/${course.art}" alt="" width="180" height="180"></header><div class="study-stats"><span><b>${course.chapters.length}</b> chapitres</span><span><b>${env?46:finance?FIN.chapters.reduce((n,c)=>n+c.sections.length,0):course.key==='positive'?30:41}</b> rappels actifs</span><a href="#${exam}">${env?'Examen blanc · 20 points':'Quiz corrigé'}</a></div>${finance?`<nav class="fin-shortcuts" aria-label="Outils de révision"><a href="#essentials">${icon('list')}${FIN.terms.length} notions</a><a href="#calculator">${icon('calculator')}Calculs financiers</a><a href="#quiz">${icon('list-checks')}${FIN_QUIZ.length} questions</a></nav>`:''}<div class="study-chapter-list">${course.chapters.map(([id,title,sub],i)=>`<a class="study-chapter-tile" href="#${id}"><span class="study-number">${String(i+1).padStart(2,'0')}</span><div><h2>${title}</h2><p>${sub}</p></div>${icon('arrow-up-right')}</a>`).join('')}</div>${course.key==='positive'?'<a class="study-extra" href="#recap">Les huit repères pour l’examen →</a>':''}</section>`;
   window.StudyUI={overview,icons};
   function sync(){
     const active=(location.hash.slice(1)||'overview').split('/')[0];
-    const view=active==='rebuild'?exam:['recall',exam,'sources'].includes(active)?active:'overview';
+    const view=active==='rebuild'||active==='calculator'?exam:['recall',exam,'sources'].includes(active)?active:'overview';
     const memoLink=document.querySelector('.study-memo-link');if(memoLink){if(active==='essentials')memoLink.setAttribute('aria-current','page');else memoLink.removeAttribute('aria-current');}
     const learningLink=document.querySelector('.study-learning-link');if(learningLink){if(['priorities','rebuild','concept-map'].includes(active))learningLink.setAttribute('aria-current','page');else learningLink.removeAttribute('aria-current');}
+    if(finance)document.querySelectorAll('.study-memo-link').forEach(a=>{if(a.hash==='#'+active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
     document.querySelectorAll('.study-tabs a').forEach(a=>{if(a.dataset.view===view)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
     if(!env){
       nav.innerHTML=course.chapters.map(([id,title],i)=>`<a href="#${id}" ${id===active?'aria-current="page"':''}><span class="nav-number">${String(i+1).padStart(2,'0')}</span><span>${title}</span><span class="nav-check">${saved.done[id]?'✓':''}</span></a>`).join('');
@@ -96,7 +101,7 @@
     const section=sections.get(id);const headings=[...section.querySelectorAll('h3,h4')];
     return [{id,title,text:section.textContent},...headings.map((h,i)=>{h.id=h.id||`${id}-notion-${i}`;let text=h.textContent,next=h.nextElementSibling;while(next&&!/^H[234]$/.test(next.tagName)){text+=' '+next.textContent;next=next.nextElementSibling;}return {id,title:h.textContent,text,anchor:h.id};})];
   });
-  const questionsForRecall=course.key==='strategic'?QUESTIONS.map((q,i)=>({id:String(i),chapter:'s'+q.s,q:q.q,a:q.o[q.a]+' '+q.e})):questions.map((q,i)=>({id:String(i),chapter:q.t,q:q.q,a:q.a[q.c]+' '+q.e}));
+  const questionsForRecall=finance?FIN.chapters.flatMap(c=>c.sections.map(s=>({id:s.id,chapter:c.id,q:s.qa[0],a:s.qa[1]}))):course.key==='strategic'?QUESTIONS.map((q,i)=>({id:String(i),chapter:'s'+q.s,q:q.q,a:q.o[q.a]+' '+q.e})):questions.map((q,i)=>({id:String(i),chapter:q.t,q:q.q,a:q.a[q.c]+' '+q.e}));
   let recallIndex=0,filter='all',unseen=false,order=questionsForRecall.slice();
   function recall(){
     renderArea.innerHTML=`<div class="study-eyebrow">Rappel actif</div><h1>Ce qui reste en mémoire.</h1><div class="study-recall-tools"><label class="study-sr" for="recall-filter">Chapitre à réviser</label><select id="recall-filter"><option value="all">Tous les chapitres</option>${course.chapters.map(([id,title])=>`<option value="${id}" ${id===filter?'selected':''}>${title}</option>`).join('')}</select><label><input id="recall-unseen" type="checkbox" ${unseen?'checked':''}> À revoir seulement</label><button id="shuffle" type="button">Mélanger</button></div><div id="study-card"></div><p id="recall-status" class="study-muted"></p>`;

@@ -1,0 +1,29 @@
+.study-finance .fin-lesson{border-bottom:1px solid var(--line);padding:32px 0}
+.study-finance .fin-lesson h3{font:500 27px/1.25 Fraunces,Georgia,serif;margin:0 0 22px;scroll-margin-top:100px}
+.study-finance .fin-lesson p,.study-finance .fin-lesson li{max-width:850px;line-height:1.8}
+.fin-flow{margin:28px 0}.fin-flow figcaption{font-size:12px;font-weight:600;color:var(--muted);margin-bottom:12px}
+.fin-flow ol{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:4px;counter-reset:step}
+.fin-flow li{border-top:3px solid var(--sage);background:#e8eee5;padding:18px 16px;min-width:0;counter-increment:step}
+.fin-flow li:nth-child(2n){background:#e5edf0;border-color:#527684}.fin-flow li:nth-child(3n){background:#f1e9e2;border-color:#a5684b}
+.fin-flow li::before{content:counter(step,decimal-leading-zero);display:block;font-size:11px;color:var(--muted);margin-bottom:16px}
+.fin-flow b{display:block;font-size:14px;line-height:1.4}.fin-flow span{display:block;font-size:12px;margin-top:8px;line-height:1.6}
+.fin-formula{padding:22px 24px;border-left:3px solid #527684;background:#eaf0f1;margin:24px 0;overflow-wrap:anywhere}
+.fin-formula>strong{font-size:19px;font-weight:600;line-height:1.6}.fin-formula p{font-size:13px;color:var(--muted);margin:8px 0 0}
+.fin-shortcuts{display:flex;flex-wrap:wrap;gap:16px 24px;margin:16px 0 32px;border-bottom:1px solid var(--line);padding-bottom:22px}
+.fin-shortcuts a{display:flex;gap:8px;align-items:center;color:var(--sage);font-size:13px;text-decoration:none}.fin-shortcuts svg{width:17px;height:17px}
+.fin-memo-tools{display:flex;flex-wrap:wrap;align-items:center;gap:18px;border-bottom:1px solid var(--line);padding:14px 0 22px;font-size:12px;color:var(--muted)}
+.fin-memo-tools input{width:260px;max-width:100%;padding:10px;border:1px solid var(--line);border-radius:6px;background:white;font:inherit;color:var(--ink)}
+.fin-term-group{margin:32px 0}.fin-term{display:grid;grid-template-columns:minmax(150px,30%) 1fr;gap:24px;border-bottom:1px solid var(--line);padding:14px 0}.fin-term dt{font-size:14px;font-weight:600}.fin-term dt a{text-decoration:none}.fin-term dd{margin:0;font-size:14px;line-height:1.6;color:var(--muted)}
+.fin-question{min-width:0;border:0;border-bottom:1px solid var(--line);padding:22px 0;margin:24px 0}
+.fin-question legend{font-size:17px;font-weight:600;max-width:100%;padding:0}.fin-question legend>span{font-size:12px;font-weight:400;color:var(--sage);margin-right:8px}
+.fin-option{display:flex;gap:12px;align-items:flex-start;margin:8px 0;padding:12px 14px;border:1px solid var(--line);border-radius:6px;background:white;font-size:14px;cursor:pointer}
+.fin-option input{margin:4px 0 0;accent-color:var(--sage);flex:none}.fin-option:has(input:checked){border-color:var(--sage);background:#edf2ea}
+.fin-feedback{padding:18px 20px;border-left:3px solid #9c4b3e;background:#f6eae5;margin-top:18px;font-size:14px}.fin-feedback.correct{border-color:var(--sage);background:#e8eee5}.fin-feedback p{margin:8px 0}.fin-feedback a{font-size:12px}
+.fin-quiz-actions{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin:28px 0}.fin-quiz-actions output{flex-basis:100%;font-size:14px;color:var(--sage)}
+.fin-calculator-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:24px 0 32px}.study-main .fin-calculator-tabs [aria-pressed="true"]{background:var(--sage);border-color:var(--sage);color:white}
+.fin-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin:22px 0}.fin-fields label{display:flex;flex-direction:column;gap:8px;font-size:13px}.fin-fields :is(input,select,textarea){font:400 15px/1.5 Inter,Arial,sans-serif;color:var(--ink);background:white;border:1px solid var(--line);border-radius:6px;padding:10px 12px;width:100%;min-width:0}.fin-fields textarea{resize:vertical;font-variant-numeric:tabular-nums}.fin-wide{grid-column:1/-1}.fin-fields .study-muted{margin:0}.fin-fields [aria-invalid="true"]{border-color:#9c4b3e}
+.fin-calc-form{padding-bottom:28px;border-bottom:1px solid var(--line)}#fin-calc-error{color:#8b3c30;font-size:14px}
+.fin-result{padding:26px 0}.fin-result>span{display:block;font-size:12px;color:var(--muted)}.fin-result>b{display:block;font:500 36px/1.4 Fraunces,Georgia,serif;color:var(--sage);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.fin-result p{margin:8px 0;color:var(--muted);font-size:14px}.fin-results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.study-finance .source-list li{gap:20px}.study-finance .source-list span{font-size:13px;text-align:right;white-space:normal}
+@media(max-width:560px){.study-finance .fin-lesson h3{font-size:24px}.fin-flow ol{grid-template-columns:1fr 1fr}.fin-flow li{padding:16px 12px}.fin-flow b{font-size:13px}.fin-formula{padding:18px}.fin-formula>strong{font-size:16px}.fin-fields,.fin-results{grid-template-columns:1fr}.fin-term{grid-template-columns:1fr;gap:6px}.fin-question legend{font-size:16px}.fin-shortcuts{gap:16px}.study-finance .source-list li{align-items:flex-start;flex-direction:column;gap:6px}.study-finance .source-list span{text-align:left}}
+@media print{.fin-shortcuts,.fin-memo-tools,.fin-calculator-tabs,.fin-calc-form,.fin-quiz-actions,#fin-quiz-filter{display:none!important}.fin-flow li,.fin-formula{print-color-adjust:exact}.fin-question,.fin-term,.fin-flow{break-inside:avoid}.fin-flow ol{grid-template-columns:repeat(3,1fr)}}
