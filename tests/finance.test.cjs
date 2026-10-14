@@ -11,7 +11,7 @@ const path=require('node:path');
   await page.goto(base,{waitUntil:'domcontentloaded'});await page.waitForSelector('.study-overview');
   assert.equal(await page.locator('#study-course option').count(),4);
   assert.equal(await page.locator('.study-chapter-tile').count(),8);
-  assert(await page.locator('.study-heading img').evaluate(i=>i.complete&&i.naturalWidth>0));
+  await page.waitForFunction(()=>{const image=document.querySelector('.study-heading img');return image?.complete&&image.naturalWidth>0;});
   const data=await page.evaluate(()=>({chapters:FIN.chapters.map(c=>({id:c.id,sections:c.sections.map(s=>s.id)})),quiz:FIN_QUIZ,terms:FIN.terms.length}));
   assert.equal(data.terms,193);
   for(const c of data.chapters){
